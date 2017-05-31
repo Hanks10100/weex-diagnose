@@ -1,0 +1,8 @@
+build/
+src/
+weex/
+doc/
+setup.sh
+
+.babelrc
+.editorconfig
