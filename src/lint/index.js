@@ -1,8 +1,8 @@
 const compile = require('../compile/index.js')
 
-function lint (text, configs) {
+function lint (text, options = {}) {
   return new Promise((resolve, reject) => {
-    compile(text, configs)
+    compile(text, options)
       .then(jsbundle => {
         resolve({ jsbundle })
       })

@@ -3,10 +3,10 @@ const lint = require('./lint')
 const reporter = require('./reporter')
 
 // entry
-function diagnose (filePath, configs) {
-  return read(filePath, configs)
-    .then(text => lint(text, configs))
-    .then(result => reporter(result, configs))
+function diagnose (filePath, options = {}) {
+  return read(filePath, options)
+    .then(text => lint(text, options))
+    .then(result => reporter(result, options))
 }
 
 module.exports = diagnose

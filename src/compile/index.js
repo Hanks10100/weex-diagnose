@@ -1,5 +1,5 @@
 
-function compile (text, configs) {
+function compile (text, options = {}) {
   return new Promise((resolve, reject) => {
     resolve(String(text))
   })

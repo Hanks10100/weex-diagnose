@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-function read (filePath, configs) {
+function read (filePath, options = {}) {
   return new Promise((resolve, reject) => {
     resolve(String(filePath))
   })
