@@ -1,9 +1,6 @@
 const fetch = require('./fetch')
 const readFile = require('./readFile')
-
-function isUrl (filePath) {
-  return false
-}
+const { isUrl } = require('../utils')
 
 function read (filePath, options = {}) {
   // console.log(' => read:', filePath)
