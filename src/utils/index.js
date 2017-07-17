@@ -1,6 +1,7 @@
 
+const URL_RE = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i
 function isUrl (filePath) {
-  return false
+  return URL_RE.test(filePath)
 }
 
 function isVueBundle (text) {
