@@ -1,3 +1,4 @@
+const runtime = require('./runtime.js')
 
 const URL_RE = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i
 function isUrl (filePath) {
@@ -5,15 +6,15 @@ function isUrl (filePath) {
 }
 
 function isVueBundle (text) {
-  return false
-}
-
-function isVueFile (text) {
   return true
 }
 
-module.exports = {
+function isVueFile (text) {
+  return false
+}
+
+module.exports = Object.assign({
   isUrl,
   isVueBundle,
   isVueFile
-}
+}, runtime)
