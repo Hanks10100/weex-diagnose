@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+var diagnose = require('../src/diagnose')
+var options = {}
+
+program
+  .version(require('../package').version)
+  .usage('[options] <file ...>')
+  .option('-o, --output', 'Output the lint result into a json file.')
+  .parse(process.argv)
+
+// 执行操作
+function run(filePath, options) {
+  if (filePath) {
+    diagnose(filePath, options)
+  } else {
+    program.help()
+  }
+}
+
+var filePath = program.args[program.args.length - 1]
+run(filePath, options)
