@@ -7,13 +7,25 @@
 function analyzeHistory (history) {
   const { callNative, callJS, refresh } = history
   const summary = getSummary(callNative)
+  // const sorted = Array.from(callNative).sort((a,b) => a.timestamp - b.timestamp)
+  // console.log(sorted)
+  printHistory(callNative)
   return summary
+}
+
+function printHistory (history) {
+  if (Array.isArray(history)) {
+    history.forEach(({ module, method, args }) => {
+      console.log(`${module}.${method}(${args.join(', ')})`)
+    })
+  }
 }
 
 function analyzeDOMTree ($root) {
   // console.log($root)
   const summary = {
-     totalCount: 0
+    totalCount: 0,
+    totalDepth: 0
   }
   const layers = {}
   const nodeMap = {}
@@ -21,6 +33,7 @@ function analyzeDOMTree ($root) {
 
   forEachNodes($root, (node, { depth }) => {
     summary.totalCount++
+    summary.totalDepth = Math.max(depth, summary.totalDepth)
     nodeMap[node.ref] = node
     if (layers[depth]) {
       layers[depth].push(node.ref)
@@ -35,7 +48,7 @@ function analyzeDOMTree ($root) {
   })
 
   // console.log(cssProps)
-  printFeatures({summary, layers, nodeMap, cssProps})
+  // printFeatures({summary, layers, nodeMap, cssProps})
   return {
     summary,
     layers,
@@ -46,10 +59,11 @@ function analyzeDOMTree ($root) {
 function printFeatures (result) {
   const { summary, layers, nodeMap, cssProps } = result
   console.log(` => 页面节点总数: ${summary.totalCount}`)
-  console.log(' => 节点各层节点数:')
-  for (const key in layers) {
-    console.log(`      ${key}: ${layers[key].length}`)
-  }
+  console.log(` => 页面最大深度: ${summary.totalDepth}`)
+  // console.log(' => 节点各层节点数:')
+  // for (const key in layers) {
+  //   console.log(`      ${key}: ${layers[key].length}`)
+  // }
   console.log(` => 样式属性的使用次数有:`)
   for (const prop in cssProps) {
     console.log(`      ${prop}: ${cssProps[prop]}`)

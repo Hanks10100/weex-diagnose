@@ -1,6 +1,6 @@
 const compile = require('../compile/index.js')
 const { isVueFile, isVueBundle, createInstance } = require('../utils')
-const { analyzeHistory, analyzeDOMTree } = require('./analyzer.js')
+const { analyzeHistory, analyzeDOMTree } = require('./analyser.js')
 
 function lint (text, options = {}) {
   // console.log(' => lint:', text)
