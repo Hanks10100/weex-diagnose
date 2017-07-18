@@ -6,9 +6,9 @@ function read (filePath, options = {}) {
   // console.log(' => read:', filePath)
   return new Promise((resolve, reject) => {
     if (isUrl(filePath)) {
-      fetch(filePath, resolve)
+      fetch(filePath, resolve, reject)
     } else {
-      readFile(filePath, resolve)
+      readFile(filePath, resolve, reject)
     }
   })
 }
