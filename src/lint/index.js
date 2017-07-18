@@ -1,6 +1,7 @@
 const compile = require('../compile/index.js')
 const { isVueFile, isVueBundle, createInstance } = require('../utils')
 const { analyzeHistory, analyzeDOMTree } = require('./analyser.js')
+const handleError = require('../exceptions')
 
 function lint (text, options = {}) {
   // console.log(' => lint:', text)
@@ -19,9 +20,17 @@ function lint (text, options = {}) {
 function lintBundle (jsbundle, callback) {
   // console.log(' => run lint', jsbundle)
 
-  const instance = createInstance(jsbundle)
-  analyzeHistory(instance.history)
-  analyzeDOMTree(instance.$getRoot())
+  let instance = null
+  try {
+    instance = createInstance(jsbundle)
+  } catch (e) {
+    handleError(e)
+  }
+
+  if (instance) {
+    analyzeHistory(instance.history)
+    analyzeDOMTree(instance.$getRoot())
+  }
 
   return callback({ errors: {} })
 }
