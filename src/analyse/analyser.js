@@ -5,11 +5,11 @@
  *  > 各模块中各种方法的调用次数
  */
 
-function forEachNodes ($root, fn, options = { depth: 1 }) {
+function forEachNode ($root, fn, options = { depth: 1 }) {
   fn.apply(null, [$root, options])
   if ($root.children && $root.children.length) {
     $root.children.forEach(node => {
-      forEachNodes(node, fn, {
+      forEachNode(node, fn, {
         depth: options.depth + 1
       })
     })
@@ -56,18 +56,17 @@ module.exports = class Analyser {
 
   analyseDOMTree ($root) {
     // console.log($root)
-    const summary = {
-      totalCount: 0,
-      totalDepth: 0
-    }
+    let totalCount = 0
+    let totalDepth = 0
     const layers = {}
     const nodeMap = {}
     const cssProps = {}
 
-    forEachNodes($root, (node, { depth }) => {
-      summary.totalCount++
-      summary.totalDepth = Math.max(depth, summary.totalDepth)
+    forEachNode($root, (node, { depth }) => {
+      totalCount++
+      totalDepth = Math.max(depth, totalDepth)
       nodeMap[node.ref] = node
+
       if (layers[depth]) {
         layers[depth].push(node.ref)
       } else {
@@ -75,12 +74,11 @@ module.exports = class Analyser {
       }
 
       for (const prop in node.style) {
-        // console.log(node.style)
         accumulate(cssProps, prop)
       }
     })
 
-    Object.assign(this._report.summary, summary, { layers, cssProps })
+    Object.assign(this._report.summary, { totalCount, totalDepth, layers, cssProps })
   }
 
   getReport () {
