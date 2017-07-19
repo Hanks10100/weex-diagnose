@@ -10,15 +10,35 @@ function analyzeHistory (history) {
   // const sorted = Array.from(callNative).sort((a,b) => a.timestamp - b.timestamp)
   // console.log(sorted)
   printHistory(callNative)
+  printSummary(summary)
   return summary
 }
 
 function printHistory (history) {
   if (Array.isArray(history)) {
     history.forEach(({ module, method, args }) => {
-      console.log(`${module}.${method}(${args.join(', ')})`)
+      console.log(`${module}.${method}(${args.map(toString).join(', ')})`)
+      // console.log(`${module}.${method}(${JSON.stringify(args)})`)
     })
   }
+}
+
+function printSummary (summary) {
+  console.log(`\n => 接口调用次数统计:`)
+  for (const key in summary) {
+    console.log(`    ${key}: ${summary[key]}`)
+  }
+}
+
+function toString (param) {
+  if (Array.isArray(param)) {
+    return param.map(toString)
+  }
+  if (typeof param === 'object') {
+    if (param.type) return `<${param.type}>`
+    return JSON.stringify(param)
+  }
+  return param
 }
 
 function analyzeDOMTree ($root) {
@@ -48,7 +68,7 @@ function analyzeDOMTree ($root) {
   })
 
   // console.log(cssProps)
-  // printFeatures({summary, layers, nodeMap, cssProps})
+  printFeatures({summary, layers, nodeMap, cssProps})
   return {
     summary,
     layers,
@@ -58,16 +78,16 @@ function analyzeDOMTree ($root) {
 
 function printFeatures (result) {
   const { summary, layers, nodeMap, cssProps } = result
-  console.log(` => 页面节点总数: ${summary.totalCount}`)
+  console.log(`\n => 页面节点总数: ${summary.totalCount}`)
   console.log(` => 页面最大深度: ${summary.totalDepth}`)
-  // console.log(' => 节点各层节点数:')
-  // for (const key in layers) {
-  //   console.log(`      ${key}: ${layers[key].length}`)
-  // }
-  console.log(` => 样式属性的使用次数有:`)
-  for (const prop in cssProps) {
-    console.log(`      ${prop}: ${cssProps[prop]}`)
+  console.log(' => 各层节点数:')
+  for (const key in layers) {
+    console.log(`      ${key}: ${layers[key].length}`)
   }
+  // console.log(` => 样式属性的使用次数有:`)
+  // for (const prop in cssProps) {
+  //   console.log(`      ${prop}: ${cssProps[prop]}`)
+  // }
 }
 
 function forEachNodes ($root, fn, options = { depth: 1 }) {

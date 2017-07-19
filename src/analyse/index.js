@@ -3,22 +3,22 @@ const { isVueFile, isVueBundle, createInstance } = require('../utils')
 const { analyzeHistory, analyzeDOMTree } = require('./analyser.js')
 const handleError = require('../exceptions')
 
-function lint (text, options = {}) {
-  // console.log(' => lint:', text)
+function analyse (text, options = {}) {
+  // console.log(' => analyse:', text)
   return new Promise((resolve, reject) => {
     if (isVueFile(text)) {
       compile(text, options)
-        .then(jsbundle => lintBundle(jsbundle, resolve))
+        .then(jsbundle => analyseBundle(jsbundle, resolve))
     } else if (isVueBundle(text)) {
-      lintBundle(text, resolve)
+      analyseBundle(text, resolve)
     } else {
       reject('unknown format')
     }
   })
 }
 
-function lintBundle (jsbundle, callback) {
-  // console.log(' => run lint', jsbundle)
+function analyseBundle (jsbundle, callback) {
+  // console.log(' => run analyse', jsbundle)
 
   let instance = null
   try {
@@ -35,4 +35,4 @@ function lintBundle (jsbundle, callback) {
   return callback({ errors: {} })
 }
 
-module.exports = lint
+module.exports = analyse
