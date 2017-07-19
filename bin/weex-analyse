@@ -2,16 +2,16 @@
 
 var program = require('commander')
 var diagnose = require('../src/diagnose')
-var options = {}
 
 program
   .version(require('../package').version)
-  .usage('[options] <file ...>')
-  .option('-o, --output', 'Output the lint result into a json file.')
+  .usage('[options] <path>')
+  .option('-s, --silent', 'Donot print the results in console.')
+  .option('-o, --output <dest>', 'Write the results into a json file.')
   .parse(process.argv)
 
 // 执行操作
-function run(filePath, options) {
+function run (filePath, options) {
   if (filePath) {
     diagnose(filePath, options)
   } else {
@@ -19,5 +19,7 @@ function run(filePath, options) {
   }
 }
 
-var filePath = program.args[program.args.length - 1]
-run(filePath, options)
+run(program.args[program.args.length - 1], {
+  silent: program.silent,
+  output: program.output
+})
