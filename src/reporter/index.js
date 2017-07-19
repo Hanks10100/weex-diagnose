@@ -1,16 +1,15 @@
 const jsonfile = require('jsonfile')
-const { getMessage } = require('./dict')
 const print = require('./print')
 
 function report (result, options = {}) {
   // console.log(' => run report')
   return new Promise((resolve, reject) => {
-    const message = getMessage(result)
     if (!options.silent) {
-      print(message, options)
+      print(result, options)
     }
-    if (options.json) {
-      jsonfile.writeFile(options.json, message, () => {
+    if (options.output) {
+      jsonfile.spaces = 2
+      jsonfile.writeFile(options.output, result, () => {
         resolve({ result })
       })
     }

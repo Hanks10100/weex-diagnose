@@ -1,6 +1,6 @@
 const compile = require('../compile/index.js')
 const { isVueFile, isVueBundle, createInstance } = require('../utils')
-const { analyzeHistory, analyzeDOMTree } = require('./analyser.js')
+const Analyser = require('./analyser.js')
 const handleError = require('../exceptions')
 
 function analyse (text, options = {}) {
@@ -20,6 +20,10 @@ function analyse (text, options = {}) {
 function analyseBundle (jsbundle, callback) {
   // console.log(' => run analyse', jsbundle)
 
+  const analyser = new Analyser()
+
+  analyser.analyseCode(jsbundle)
+
   let instance = null
   try {
     instance = createInstance(jsbundle)
@@ -28,11 +32,11 @@ function analyseBundle (jsbundle, callback) {
   }
 
   if (instance) {
-    analyzeHistory(instance.history)
-    analyzeDOMTree(instance.$getRoot())
+    analyser.analyseHistory(instance.history)
+    analyser.analyseDOMTree(instance.$getRoot())
   }
 
-  return callback({ errors: {} })
+  return callback(analyser.getReport())
 }
 
 module.exports = analyse

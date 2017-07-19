@@ -2,12 +2,16 @@ const fs = require('fs')
 const url = require('url')
 
 const dotweRE = /^(https?\:\/\/dotwe\.org)\/(vue|weex)\/(\w+)$/i
+const wxtplRE = /^(https?\:\/\/.+)\?\_wx\_tpl\=(https?\:\/\/.+)$/i
 function decode (url) {
   // 解析 dotwe 中的链接
   if (url.match(dotweRE)) {
     return url.replace(dotweRE, ($, host, type, hash) => {
       return `${host}/raw/dist/${hash}.bundle.${type === 'weex' ? 'js' : 'wx'}`
     })
+  }
+  if (url.match(wxtplRE)) {
+    return url.replace(wxtplRE, ($, mock, real) => real)
   }
   return url
 }
