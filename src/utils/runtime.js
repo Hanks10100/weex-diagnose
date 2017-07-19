@@ -1,15 +1,38 @@
-const { init, config } = require('weex-js-runtime')
+const jsfm = require('weex-js-runtime')
 const Vue = require('weex-vue-framework')
 const { Runtime, Instance } = require('weex-vdom-tester')
 
-init()
+jsfm.init()
+jsfm.freezePrototype()
+
+setupNativeEnv(global)
+
+// TODO: mock global APIs
+function setupNativeEnv (context) {
+  context.WXEnvironment = {
+    weexVersion: '',
+    platform: 'Node.js',
+    osVersion: '',
+    appGroup: '',
+    appName: '',
+    appVersion: '',
+    deviceWidth: 1080,
+    deviceHeight: 1920
+  }
+  context.getJSFMVersion = function () {
+    return 'x'
+  }
+}
 
 function prepareRuntime () {
+  jsfm.setNativeConsole()
+  jsfm.setNativeTimer()
+
   let sendTasksHandler = function () {}
-  config.sendTasks = config.Document.handler = function (...args) {
+  jsfm.config.sendTasks = jsfm.config.Document.handler = function (...args) {
     sendTasksHandler.apply(null, args)
   }
-  Vue.init(config)
+  Vue.init(jsfm.config)
   const runtime = new Runtime(Vue)
   sendTasksHandler = function () {
     runtime.target.callNative.apply(runtime.target, arguments)
@@ -18,7 +41,9 @@ function prepareRuntime () {
 }
 
 function resetRuntime () {
-  delete config.Document.handler
+  jsfm.resetNativeConsole()
+  jsfm.resetNativeTimer()
+  delete jsfm.config.Document.handler
   Vue.reset()
 }
 

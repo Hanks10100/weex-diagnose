@@ -1,5 +1,5 @@
 function print (message, options = {}) {
-  console.log('---------> print <---------')
+  // console.log('---------> print <---------')
 }
 
 module.exports = print
