@@ -11,11 +11,14 @@
     "vue",
     "lint"
   ],
+  "bin": {
+    "weex-analyse": "./bin/weex-analyse"
+  },
   "author": "Hanks <zhanghan.me@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "chai": "^4.0.0",
-    "commander": "^2.9.0",
+    "commander": "^2.11.0",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "jsonfile": "^3.0.0",
