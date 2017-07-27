@@ -1,4 +1,3 @@
-const fs = require('fs')
 const url = require('url')
 
 const dotweRE = /^(https?\:\/\/dotwe\.org)\/(vue|weex)\/(\w+)$/i
@@ -16,13 +15,10 @@ function decode (url) {
   return url
 }
 
-function fetch (url, resolve, reject) {
-  return download(decode(url.toLowerCase()), resolve, reject)
-}
-
 // 下载远程文件
-function download(remotePath, onfinish, onerror) {
-  // console.log(` => remotePath`, remotePath)
+function download (remotePath, onfinish, onerror) {
+  console.log(` => remotePath`, remotePath)
+  const realUrl = decode(remotePath.toLowerCase())
 
   // 动态选择 http 或 https
   let service = null
@@ -44,4 +40,4 @@ function download(remotePath, onfinish, onerror) {
   }
 }
 
-module.exports = fetch
+module.exports = download
