@@ -49,12 +49,30 @@ function clonePlainObject (obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
+function forEachNode ($root, fn, options = {}) {
+  if (!options.parent) {
+    options.depth = 1
+    options.path = $root.type
+  }
+  fn.apply(null, [$root, options])
+  if ($root.children && $root.children.length) {
+    $root.children.forEach(node => {
+      forEachNode(node, fn, {
+        parent: $root,
+        depth: options.depth + 1,
+        path: `${options.path} -> ${node.type}`
+      })
+    })
+  }
+}
+
 module.exports = Object.assign({
   uniqueId,
   isURL,
   convertURL,
   accumulate,
   clonePlainObject,
+  forEachNode,
   isVueBundle,
   isVueFile
 }, runtime)

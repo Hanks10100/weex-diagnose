@@ -12,20 +12,14 @@ function toString (param) {
   return param
 }
 
-function printHistoryRecords (records) {
-  // console.log(records)
-  if (Array.isArray(records)) {
+function printHistory (history) {
+  // console.log(history)
+  if (Array.isArray(history)) {
     console.log()
-    records.forEach(({ module, method, args }) => {
+    history.forEach(({ module, method, args }) => {
       console.log(`${module}.${method}(${args.map(toString).join(', ')})`)
     })
   }
-}
-
-function printHistory (history = {}) {
-  // console.log(history)
-  const { records, summary } = history
-  printHistoryRecords(records)
 }
 
 module.exports = printHistory

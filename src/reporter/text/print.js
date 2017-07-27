@@ -14,5 +14,5 @@ function generateVanillaCode (history) {
 module.exports = function print (report, options = {}) {
   // console.log(generateVanillaCode(report.history))
   printHistory(report.history)
-  printSummary(report.vdom.summary)
+  printSummary(report.summary)
 }

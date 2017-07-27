@@ -1,17 +1,6 @@
-const { accumulate } = require('../utils')
+const { accumulate, forEachNode } = require('../../utils')
 
-function forEachNode ($root, fn, options = { depth: 1 }) {
-  fn.apply(null, [$root, options])
-  if ($root.children && $root.children.length) {
-    $root.children.forEach(node => {
-      forEachNode(node, fn, {
-        depth: options.depth + 1
-      })
-    })
-  }
-}
-
-function analyseVdom ($root) {
+function getSummary ($root) {
   // console.log($root)
   let totalCount = 0
   let totalDepth = 0
@@ -35,9 +24,7 @@ function analyseVdom ($root) {
     }
   })
 
-  return {
-    summary: { totalCount, totalDepth, layers, cssProps }
-  }
+  return { totalCount, totalDepth, layers, cssProps }
 }
 
-module.exports = analyseVdom
+module.exports = getSummary
