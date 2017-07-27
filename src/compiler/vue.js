@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const MemoryFS = require('memory-fs')
-const webpackConfig = require('./webpack.config.js')
+const webpackConfig = require('./configs/webpack.config')
 const preLoadPackages = require('./preLoadPackages')
 
 function createMemoryFS () {
@@ -17,7 +17,7 @@ function createMemoryFS () {
   return mfs
 }
 
-function compile (text, options = {}) {
+function compileVue (text, options = {}) {
   // console.log(' => compile', text)
   const mfs = createMemoryFS()
   mfs.writeFileSync('/index.vue', text)
@@ -42,4 +42,4 @@ function compile (text, options = {}) {
   })
 }
 
-module.exports = compile
+module.exports = compileVue
