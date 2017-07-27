@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander')
-var diagnose = require('../src/diagnose')
+var start = require('../src')
 
 program
   .version(require('../package').version)
@@ -13,7 +13,7 @@ program
 // 执行操作
 function run (filePath, options) {
   if (filePath) {
-    diagnose(filePath, options)
+    start(filePath, options)
   } else {
     program.help()
   }
