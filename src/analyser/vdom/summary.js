@@ -1,7 +1,7 @@
 const { accumulate, forEachNode } = require('../../utils')
 
 function getSummary ($root) {
-  // console.log($root)
+  // console.log(` => get vdom summary`)
   let totalCount = 0
   let totalDepth = 0
   const layers = {}

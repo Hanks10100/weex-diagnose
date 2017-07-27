@@ -1,6 +1,7 @@
 const { accumulate } = require('../utils')
 
 function analyseHistory (history) {
+  // console.log(` => analyse history`)
   const callCount = {}
   if (Array.isArray(history)) {
     history.forEach(({ module, method, args }) => {

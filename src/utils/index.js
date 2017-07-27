@@ -50,6 +50,7 @@ function clonePlainObject (obj) {
 }
 
 function forEachNode ($root, fn, options = {}) {
+  if (!$root) return
   if (!options.parent) {
     options.depth = 1
     options.path = $root.type

@@ -44,23 +44,43 @@ class WeexNodeRunner {
 
   execute (code) {
     const createInstance = this._context.createInstance
-    const result = this.standardizeResult(
-      createInstance.call(null, uniqueId(), code)
-    )
+    return new Promise((resolve, reject) => {
+      let instance = null
+      try {
+        instance = createInstance.call(null, uniqueId(), code)
+      } catch (e) {
+        this.reset()
+        // console.log(` => catch in execute`)
+        const result = this.standardizeResult(instance)
+        result.exception = e
+        reject(result)
+      }
+      if (instance) {
+        setTimeout(() => {
+          const result = this.standardizeResult(instance)
+          this.reset()
+          resolve(result)
+        }, 100)
+      }
+    })
+  }
+
+  reset () {
     env.resetConsole()
     this._history = []
     this._logs = []
-    return result
   }
 
   standardizeResult (instance) {
-    return {
-      // state: 'success',
-      // type: 'Vue',
+    // console.log(` => standardize result`)
+    const result = {
       logs: clonePlainObject(this._logs),
-      history: clonePlainObject(this._history),
-      vdom: clonePlainObject(instance.document.body)
+      history: clonePlainObject(this._history)
     }
+    if (instance && instance.document) {
+      result.vdom = clonePlainObject(instance.document.body)
+    }
+    return result
   }
 }
 

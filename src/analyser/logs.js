@@ -4,6 +4,7 @@ function parseLogText (text) {
 }
 
 function analyseLogs (logs) {
+  // console.log(` => analyse logs`)
   const summary = {}
   const records = {}
   if (Array.isArray(logs)) {

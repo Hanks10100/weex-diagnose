@@ -1,6 +1,7 @@
 module.exports = {
   "dom": [
     "addEvent",
+    "getComponentRect",
     "removeElement",
     "updateFinish",
     "scrollToElement",

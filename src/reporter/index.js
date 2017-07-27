@@ -14,6 +14,7 @@ class Reporter {
   }
 
   report (result) {
+    // console.log(` => start report`)
     return this._currentReporter(result, this._options)
   }
 }
