@@ -3,18 +3,32 @@ function toString (param) {
     return param.map(toString)
   }
   if (typeof param === 'object') {
-    if (param.type) return `<${param.type}>`
+    // if (param.type) return `<${param.type}>`
     return JSON.stringify(param)
+  }
+  if (typeof param === 'string') {
+    return `"${param}"`
   }
   return param
 }
 
 function printHistory (history) {
   if (Array.isArray(history)) {
+    console.log()
     history.forEach(({ module, method, args }) => {
       console.log(`${module}.${method}(${args.map(toString).join(', ')})`)
     })
   }
+}
+
+function generateVanillaCode (history) {
+  let code = '// { "framework": "Vanilla" }\n\n'
+  if (Array.isArray(history)) {
+    history.forEach(({ module, method, args }) => {
+      code += `sendTasks(id,[{module:'${module}',method:'${method}',args:${JSON.stringify(args)}}],-1)\n`
+    })
+  }
+  return code
 }
 
 function printSummary (summary) {
@@ -36,6 +50,7 @@ function printSummary (summary) {
 }
 
 module.exports = function print (report, options = {}) {
-  // printHistory(report.history)
+  // console.log(generateVanillaCode(report.history))
+  printHistory(report.history)
   printSummary(report.summary)
 }
