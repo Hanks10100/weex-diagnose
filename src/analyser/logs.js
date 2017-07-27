@@ -12,6 +12,7 @@ function analyseLogs (logs) {
       accumulate(summary, type)
       records[type] = records[type] || []
       records[type].push(log)
+      // console.log(log.text)
     })
   }
   return { records, summary }

@@ -1,15 +1,21 @@
 const jsonfile = require('jsonfile')
-const print = require('./text/print')
+const textReporter = require('./text/print')
+const jsonReporter = require('./json')
 
-function report (result, options = {}) {
-  // console.log(' => run report')
-  if (!options.silent) {
-    print(result, options)
+class Reporter {
+  constructor (options = {}) {
+    this._options = options
+    this._currentReporter = textReporter
+    switch (options.type) {
+      case 'text': this._currentReporter = textReporter; break;
+      case 'json': this._currentReporter = jsonReporter; break;
+      // case 'html': this._currentReporter = htmlReporter; break;
+    }
   }
-  if (options.output) {
-    jsonfile.spaces = 2
-    jsonfile.writeFile(options.output, result)
+
+  report (result) {
+    return this._currentReporter(result, this._options)
   }
 }
 
-module.exports = report
+module.exports = Reporter

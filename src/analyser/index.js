@@ -4,15 +4,13 @@ const analyseHistory = require('./history')
 
 function analyser (records, options) {
   // console.log(' => run analyser')
-  return new Promise((resolve, reject) => {
-    const { history, vdom, logs } = records
+  const { history, vdom, logs } = records
 
-    resolve({
-      logs: analyseLogs(logs),
-      vdom: analyseVdom(vdom),
-      history: analyseHistory(history)
-    })
-  })
+  return {
+    logs: analyseLogs(logs),
+    vdom: analyseVdom(vdom),
+    history: analyseHistory(history)
+  }
 }
 
 
