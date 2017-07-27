@@ -1,17 +1,16 @@
 const { accumulate } = require('../utils')
 
 function analyseHistory (history) {
-  const { callNative, callJS, refresh } = history
   const callCount = {}
-  if (Array.isArray(callNative)) {
-    callNative.forEach(({ module, method, args }) => {
+  if (Array.isArray(history)) {
+    history.forEach(({ module, method, args }) => {
       accumulate(callCount, module)
       accumulate(callCount, `${module}.${method}`)
     })
   }
 
   return {
-    records: callNative,
+    records: history,
     summary: { callCount }
   }
 }

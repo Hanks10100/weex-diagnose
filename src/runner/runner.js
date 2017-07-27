@@ -1,4 +1,6 @@
 const env = require('./env')
+const modules = require('./modules')
+const components = require('./components')
 const { clonePlainObject, uniqueId } = require('../utils')
 
 class WeexNodeRunner {
@@ -18,6 +20,9 @@ class WeexNodeRunner {
 
     // init frameworks
     this._context = init(config)
+
+    this._context.registerModules(modules)
+    this._context.registerComponents(components)
   }
 
   mockGlobalAPI () {
@@ -31,16 +36,21 @@ class WeexNodeRunner {
   }
 
   execute (code) {
-    const instance = this._context.createInstance(uniqueId(), code)
-    // console.log(instance.document.body)
-    const result = {
-      state: 'success',
-      // type: 'Vue',
-      history: clonePlainObject(this._history),
-      instance
-    }
+    const createInstance = this._context.createInstance
+    const result = this.standardizeResult(
+      createInstance.call(null, uniqueId(), code)
+    )
     this._history = []
     return result
+  }
+
+  standardizeResult (instance) {
+    return {
+      // state: 'success',
+      // type: 'Vue',
+      history: clonePlainObject(this._history),
+      vdom: clonePlainObject(instance.document.body)
+    }
   }
 }
 

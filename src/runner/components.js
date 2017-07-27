@@ -1,1 +1,22 @@
-module.exports = {}
+module.exports = [
+  "container",
+  "div",
+  "text",
+  "image",
+  "scroller",
+  "list",
+  "header",
+  "cell",
+  "embed",
+  "a",
+  "switch",
+  "video",
+  "indicator",
+  "slider",
+  "web",
+  "loading",
+  "loading-indicator",
+  "refresh",
+  "input",
+  "textarea"
+]
