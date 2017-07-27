@@ -4,6 +4,7 @@ const { convertURL } = require('../utils')
 // 下载远程文件
 function download (remotePath, onfinish, onerror) {
   const realUrl = convertURL(remotePath.toLowerCase())
+  // console.log(` => download ${realUrl}`)
 
   // 动态选择 http 或 https
   let service = null

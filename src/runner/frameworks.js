@@ -1,10 +1,10 @@
-// const Weex = require('weex-legacy-framework')
+const Weex = require('weex-legacy-framework')
 // const Vanilla = require('weex-vanilla-framework')
 const Vue = require('weex-vue-framework')
 const Rax = require('weex-rax-framework')
 
 module.exports = {
-  // Weex,
+  Weex,
   // Vanilla,
   Vue,
   Rax

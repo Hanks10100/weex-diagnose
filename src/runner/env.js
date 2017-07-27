@@ -10,7 +10,6 @@ function mockWXEnvironment () {
   return {}
 }
 
-const originalConsole = Object.assign({}, console)
 function mockConsole (hook) {
   return {
     log (...args) { hook('log', ...args) },
@@ -21,6 +20,7 @@ function mockConsole (hook) {
   }
 }
 
+const originalConsole = Object.assign({}, console)
 function resetConsole () {
   Object.assign(console, originalConsole)
 }

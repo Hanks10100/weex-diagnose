@@ -72,7 +72,7 @@ class WeexNodeRunner {
   }
 
   standardizeResult (instance) {
-    // console.log(` => standardize result`)
+    console.log(` => standardize result`)
     const result = {
       logs: clonePlainObject(this._logs),
       history: clonePlainObject(this._history)
