@@ -1,5 +1,10 @@
 const runtime = require('./runtime.js')
 
+const uniqueId = (() => {
+  let uid = 1
+  return () => (uid++).toString()
+})()
+
 const URLRE = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i
 function isURL (filePath) {
   return URLRE.test(filePath)
@@ -35,9 +40,21 @@ function convertURL (url) {
   return url
 }
 
+function accumulate (object, key, step = 1) {
+  object[key] = object[key] || 0
+  object[key] += step
+}
+
+function clonePlainObject (obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
 module.exports = Object.assign({
+  uniqueId,
   isURL,
   convertURL,
+  accumulate,
+  clonePlainObject,
   isVueBundle,
   isVueFile
 }, runtime)

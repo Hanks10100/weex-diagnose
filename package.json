@@ -32,6 +32,7 @@
     "webpack": "^2.6.1",
     "weex-js-runtime": "^0.20.5",
     "weex-loader": "^0.4.4",
+    "weex-rax-framework": "^0.4.7",
     "weex-style-validator": "^0.1.0",
     "weex-template-compiler": "^2.2.2-weex.1",
     "weex-vdom-tester": "^0.2.0",
