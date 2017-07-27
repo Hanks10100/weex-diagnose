@@ -50,7 +50,8 @@ function printSummary (summary) {
 }
 
 module.exports = function print (report, options = {}) {
+  console.log(report)
   // console.log(generateVanillaCode(report.history))
-  printHistory(report.history)
-  printSummary(report.summary)
+  // printHistory(report.history)
+  // printSummary(report.summary)
 }
