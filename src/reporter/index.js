@@ -2,7 +2,7 @@ const jsonfile = require('jsonfile')
 const print = require('./text/print')
 
 function report (result, options = {}) {
-  console.log(' => run report')
+  // console.log(' => run report')
   if (!options.silent) {
     print(result, options)
   }

@@ -6,6 +6,7 @@ const { clonePlainObject, uniqueId } = require('../utils')
 class WeexNodeRunner {
   constructor (frameworks, runtime, services) {
     this._history = []
+    this._logs = []
     this.mockGlobalAPI()
 
     const { init, config } = runtime
@@ -16,7 +17,7 @@ class WeexNodeRunner {
     }
 
     // runtime.freezePrototype()
-    runtime.setNativeConsole()
+    // runtime.setNativeConsole()
 
     // init frameworks
     this._context = init(config)
@@ -28,11 +29,17 @@ class WeexNodeRunner {
   mockGlobalAPI () {
     global.callNative = env.mockCallNative(_task => {
       const task = clonePlainObject(_task)
-      // console.log(`${task.module}.${task.method}`)
       task.timestamp = Date.now()
       this._history.push(task)
     })
     global.WXEnvironment = env.mockWXEnvironment()
+    Object.assign(console, env.mockConsole((type, ...args) => {
+      this._logs.push({
+        type,
+        timestamp: Date.now(),
+        text: args.join(' ')
+      })
+    }))
   }
 
   execute (code) {
@@ -40,7 +47,9 @@ class WeexNodeRunner {
     const result = this.standardizeResult(
       createInstance.call(null, uniqueId(), code)
     )
+    env.resetConsole()
     this._history = []
+    this._logs = []
     return result
   }
 
@@ -48,6 +57,7 @@ class WeexNodeRunner {
     return {
       // state: 'success',
       // type: 'Vue',
+      logs: clonePlainObject(this._logs),
       history: clonePlainObject(this._history),
       vdom: clonePlainObject(instance.document.body)
     }

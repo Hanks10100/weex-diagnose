@@ -23,6 +23,7 @@ function runner (jsbundle, callback) {
 
     if (result) {
       Object.assign(records, {
+        logs: result.logs,
         history: result.history,
         vdom: result.vdom
       })
