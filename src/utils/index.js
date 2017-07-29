@@ -10,6 +10,55 @@ function isURL (filePath) {
   return URLRE.test(filePath)
 }
 
+function isChinese (str) {
+  return /^[\u4e00-\u9fa5]$/.test(str)
+}
+
+function lengthOf (str) {
+  return String(str).split('')
+    .map(c => isChinese(c) ? 2 : 1)
+    .reduce((a, b) => a + b)
+}
+
+function sizeof (object) {
+  return lengthOf(JSON.stringify(object))
+}
+
+function leftPad (str, N, space = ' ') {
+  return space.repeat(N - lengthOf(str)) + str
+}
+
+function rightPad (str, N, space = ' ') {
+  return str + space.repeat(N - lengthOf(str))
+}
+
+function centerPad (str, N, space = ' ') {
+  const left = (N - lengthOf(str)) >> 1
+  return rightPad(space.repeat(left) + str, N, space)
+}
+
+function getPadFunction (align) {
+  switch (align) {
+    case 'left': return rightPad
+    case 'right': return leftPad
+  }
+  return centerPad
+}
+
+function mapObject (object, fn) {
+  const result = {}
+  for (const key in object) {
+    result[key] = fn(object[key], key)
+  }
+  return result
+}
+
+// 当前的微秒数
+function microsecond () {
+  const time = process.hrtime()
+  return time[0] * 1e6 + time[1] / 1e3
+}
+
 function isVueBundle (text) {
   return true
 }
@@ -67,13 +116,31 @@ function forEachNode ($root, fn, options = {}) {
   }
 }
 
+function objectToArray (object) {
+  const array = []
+  for (const key in object) {
+    array.push({ key, value: object[key] })
+  }
+  return array
+}
+
 module.exports = Object.assign({
   uniqueId,
   isURL,
+  isChinese,
+  lengthOf,
+  sizeof,
+  leftPad,
+  rightPad,
+  centerPad,
+  getPadFunction,
+  mapObject,
+  microsecond,
   convertURL,
   accumulate,
   clonePlainObject,
   forEachNode,
+  objectToArray,
   isVueBundle,
   isVueFile
 }, runtime)

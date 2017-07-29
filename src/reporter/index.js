@@ -1,5 +1,5 @@
 const jsonfile = require('jsonfile')
-const textReporter = require('./text/print')
+const textReporter = require('./text')
 const jsonReporter = require('./json')
 
 class Reporter {
