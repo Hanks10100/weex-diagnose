@@ -1,93 +1,108 @@
+const _ = require('lodash')
 const { sizeof, getPadFunction, mapObject } = require('../../utils')
 
-// const borderTheme = [
+// const defaultTableTheme = [
 //   '    '.split(''),
 //   '    '.split(''),
 //   '    '.split(''),
 //   '    '.split('')
 // ]
-// const borderTheme = [
+// const defaultTableTheme = [
 //   '+-++'.split(''),
 //   '|-+|'.split(''),
 //   '| +|'.split(''),
 //   '+-++'.split(''),
 // ]
-const borderTheme = [
+const defaultTableTheme = [
   '┌─┬┐'.split(''),
   '├─┼┤'.split(''),
   '| ||'.split(''),
   '└─┴┘'.split('')
 ]
-// const borderTheme = [
+// const defaultTableTheme = [
 //   '╔═╦╗'.split(''),
 //   '╠═╬╣'.split(''),
 //   '║ ║║'.split(''),
 //   '╚═╩╝'.split('')
 // ]
 
-function indentString (string, indent) {
-  return String(string).split(/[\r\n]+/).map(s => ' '.repeat(indent) + s).join('\n')
-}
 
-function parseTable (table) {
-  const columnLength = []
-  table.forEach(row => {
-    row.forEach((v, i) => {
-      columnLength[i] = Math.max(columnLength[i] || 0, sizeof(v))
-    })
-  })
-  return columnLength
+function getColumnLength (table) {
+  return _.zip(...table).map(column =>
+    column.reduce((max, v) => Math.max(max, sizeof(v)), 0)
+  )
 }
 
 function convertTable (table, align = 'left') {
-  const props = []
-  const result = table.map((row, i) => {
-    if (Array.isArray(row)) return row
-    const values = []
-    for (const key in row) {
-      if (i === 0) { props.push(key) }
-      values.push(row[key])
-    }
-    return values
-  })
-  if (props.length) result.unshift(props)
-  return result
+  if (_.isPlainObject(table)) {
+    table = _.entries(table)
+  }
+  if (table.every(row => Array.isArray(row))) {
+    return { titles: [], values: table }
+  }
+  return {
+    titles: Object.keys(_.sample(table)),
+    values: table.map(_.values)
+  }
 }
 
-function generateLine (array, mapFn, gap, theme) {
-  const [left, fill, spliter, right] = theme
-  const space = fill.repeat(gap)
-  return `${left}` +
-    array.map((N, i) => space + mapFn(N, i, fill) + space).join(spliter)
-    + `${right}`
+function partialCreatorOptions (layout, options) {
+  const { gap, align, indent } = Object.assign({}, defaultOptions, options)
+  const pad = getPadFunction(align)
+
+  return (mapFn, theme) => {
+    const [left, fill, spliter, right] = theme
+    const space = fill.repeat(gap)
+    return ' '.repeat(indent) + left +
+      layout.map((N, i) => space + pad(mapFn(N, i, fill), N, fill) + space).join(spliter)
+      + right
+  }
 }
 
 const defaultOptions = {
   gap: 2,
   indent: 0,
   align: 'left',
+  tableTheme: defaultTableTheme
 }
-function printTable (rawTable, options) {
-  const { gap, align, indent } = Object.assign({}, defaultOptions, options)
-  const pad = getPadFunction(align)
 
-  const formattedTable = convertTable(rawTable)
-  const columnLength = parseTable(formattedTable)
+function getCreator (layout, options) {
+  const { align, tableTheme } = Object.assign({}, defaultOptions, options)
+  const makeCreator = partialCreatorOptions(layout, options)
 
-  function generateBorder (theme) {
-    return generateLine(columnLength, (N, i, fill) => fill.repeat(N), gap, theme)
+  const createSpliter = theme => makeCreator((N, i, fill) => fill.repeat(N), theme)
+  const createContent = values => makeCreator((N, i) => values[i], tableTheme[2])
+
+  const createTitle = titles => {
+    if (titles.length) {
+      return [
+        createContent(titles, tableTheme[2]),
+        createSpliter(tableTheme[1])
+      ]
+    }
+    return []
   }
 
-  const [top, border, content, bottom] = borderTheme.map(generateBorder)
+  return {
+    createTop: () => createSpliter(tableTheme[0]),
+    createTitle,
+    createBottom: () => createSpliter(tableTheme[3]),
+    createContent
+  }
+}
 
-  const [head, ...body] = formattedTable.map(
-    row => generateLine(columnLength, (N, i) => pad(row[i], N), gap, borderTheme[2])
-  )
+function printTable (rawTable, options) {
+  const { titles, values } = convertTable(rawTable)
+  const columnLength = getColumnLength([titles, ...values])
+  const { createTop, createTitle, createBottom, createContent } = getCreator(columnLength, options)
 
-  let output = [top, head, border, body.join('\n'), bottom].join('\n')
+  const output = _.flatten([
+    createTop(),
+    createTitle(titles),
+    values.map(createContent),
+    createBottom()
+  ]).join('\n')
 
-  // console.log(output)
-  output = indentString(output, indent)
   console.log(output)
 }
 

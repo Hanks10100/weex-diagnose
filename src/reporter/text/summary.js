@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const formatter = require('./formatter')
 const { printTable } = require('./print')
 const { objectToArray } = require('../../utils')
@@ -29,7 +28,7 @@ function printSummary (summary) {
   printTable(table, { align: 'right' })
 
   console.log(`\n => 接口调用次数统计:`)
-  printTable(_.toPairs(callCount), { indent: 4 })
+  printTable(callCount, { indent: 4 })
   // console.log(' => 各层节点数:')
   // for (const key in layers) {
   //   console.log(`      ${key}: ${layers[key].length}`)

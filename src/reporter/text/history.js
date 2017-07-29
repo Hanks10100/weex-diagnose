@@ -49,7 +49,7 @@ function formatHistory (history) {
 function printHistory (history) {
   if (Array.isArray(history)) {
     console.log()
-    // printTable(formatHistory(history))
+    // printTable(history.map(formatRecord))
     history.map(formatRecord).forEach(([module, method, args, time]) => {
       console.log(`${module}.${method}(${args})`)
     })
