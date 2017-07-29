@@ -1,36 +1,18 @@
 const _ = require('lodash')
-const { sizeof, getPadFunction, mapObject } = require('../../utils')
+const { sizeof, getPadFunction } = require('../../utils')
 
-// const defaultTableTheme = [
-//   '    '.split(''),
-//   '    '.split(''),
-//   '    '.split(''),
-//   '    '.split('')
-// ]
-// const defaultTableTheme = [
-//   '+-++'.split(''),
-//   '|-+|'.split(''),
-//   '| +|'.split(''),
-//   '+-++'.split(''),
-// ]
-const defaultTableTheme = [
-  '┌─┬┐'.split(''),
-  '├─┼┤'.split(''),
-  '| ||'.split(''),
-  '└─┴┘'.split('')
-]
-// const defaultTableTheme = [
-//   '╔═╦╗'.split(''),
-//   '╠═╬╣'.split(''),
-//   '║ ║║'.split(''),
-//   '╚═╩╝'.split('')
-// ]
-
-
-function getColumnLength (table) {
-  return _.zip(...table).map(column =>
-    column.reduce((max, v) => Math.max(max, sizeof(v)), 0)
-  )
+const defaultOptions = {
+  gap: 2,
+  indent: 0,
+  align: 'left',
+  showLine: false,
+  tableTheme: [
+    '┌─┬┐'.split(''),
+    '├─┼┤'.split(''),
+    '| ||'.split(''),
+    '| ||'.split(''),
+    '└─┴┘'.split('')
+  ],
 }
 
 function convertTable (table, align = 'left') {
@@ -46,6 +28,24 @@ function convertTable (table, align = 'left') {
   }
 }
 
+function getColumnLength (table) {
+  return _.zip(...table).map(column =>
+    column.reduce((max, v) => Math.max(max, sizeof(v)), 0)
+  )
+}
+
+function joinArray (array, spliter) {
+  if (!spliter) return array
+  const result = []
+  for (var i = 0; i < array.length; ++i) {
+    result.push(array[i])
+    if (i !== array.length - 1) {
+      result.push(spliter)
+    }
+  }
+  return result
+}
+
 function partialCreatorOptions (layout, options) {
   const { gap, align, indent } = Object.assign({}, defaultOptions, options)
   const pad = getPadFunction(align)
@@ -59,34 +59,33 @@ function partialCreatorOptions (layout, options) {
   }
 }
 
-const defaultOptions = {
-  gap: 2,
-  indent: 0,
-  align: 'left',
-  tableTheme: defaultTableTheme
-}
-
-function getCreator (layout, options) {
-  const { align, tableTheme } = Object.assign({}, defaultOptions, options)
+function getCreators (layout, options) {
+  const { showLine, tableTheme } = Object.assign({}, defaultOptions, options)
   const makeCreator = partialCreatorOptions(layout, options)
 
   const createSpliter = theme => makeCreator((N, i, fill) => fill.repeat(N), theme)
-  const createContent = values => makeCreator((N, i) => values[i], tableTheme[2])
+  const createContent = values => makeCreator((N, i) => values[i], tableTheme[3])
 
   const createTitle = titles => {
     if (titles.length) {
       return [
-        createContent(titles, tableTheme[2]),
+        createContent(titles),
         createSpliter(tableTheme[1])
       ]
     }
     return []
   }
 
+  const createBody = values => joinArray(
+    values.map(createContent),
+    showLine ? createSpliter(tableTheme[2]) : null
+  )
+
   return {
     createTop: () => createSpliter(tableTheme[0]),
     createTitle,
-    createBottom: () => createSpliter(tableTheme[3]),
+    createBottom: () => createSpliter(tableTheme[4]),
+    createBody,
     createContent
   }
 }
@@ -94,13 +93,13 @@ function getCreator (layout, options) {
 function printTable (rawTable, options) {
   const { titles, values } = convertTable(rawTable)
   const columnLength = getColumnLength([titles, ...values])
-  const { createTop, createTitle, createBottom, createContent } = getCreator(columnLength, options)
+  const ctrs = getCreators(columnLength, options)
 
   const output = _.flatten([
-    createTop(),
-    createTitle(titles),
-    values.map(createContent),
-    createBottom()
+    ctrs.createTop(),
+    ctrs.createTitle(titles),
+    ctrs.createBody(values),
+    ctrs.createBottom()
   ]).join('\n')
 
   console.log(output)
