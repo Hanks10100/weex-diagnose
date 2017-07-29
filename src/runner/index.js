@@ -12,7 +12,7 @@ function runner (jsbundle, analyser) {
   // console.log(' => run runner')
   // console.log(jsbundle)
   analyser.takeRecord('bundleSize', sizeof(jsbundle))
-  const nodeRunner = new WeexNodeRunner(frameworks, runtime)
+  const nodeRunner = new WeexNodeRunner(frameworks, runtime, {}, analyser)
 
   return nodeRunner.execute(jsbundle)
     .catch(result => {

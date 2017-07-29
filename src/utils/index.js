@@ -59,8 +59,17 @@ function microsecond () {
   return time[0] * 1e6 + time[1] / 1e3
 }
 
+const versionRegExp = /^\s*\/\/ *(\{[^}]*\}) *\r?\n/
+function getJSBundleType (code) {
+  const res = versionRegExp.exec(code)
+  if (res) {
+    return JSON.parse(res[1]).framework
+  }
+  return ''
+}
+
 function isVueBundle (text) {
-  return true
+  return getJSBundleType(text) === 'Vue'
 }
 
 function isVueFile (text) {
@@ -140,6 +149,7 @@ module.exports = Object.assign({
   deepClone,
   forEachNode,
   objectToArray,
+  getJSBundleType,
   isVueBundle,
   isVueFile
 }, runtime)

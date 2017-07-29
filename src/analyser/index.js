@@ -18,6 +18,14 @@ class Analyser {
     // console.log(` => take record form ${type}`)
     if (type === 'runner' && this._raw) {
       Object.assign(this._raw, content)
+      return
+    }
+
+    if (type === 'lifecycle' && this._raw) {
+      this._raw.lifecycle = this._raw.lifecycle || []
+      this._raw.lifecycle.push(content)
+      // console.log(content)
+      return
     }
 
     if (_.isPlainObject(content)) {

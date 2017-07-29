@@ -5,7 +5,10 @@ const components = require('./components')
 const { deepClone, microsecond } = require('../utils')
 
 class WeexNodeRunner {
-  constructor (frameworks, runtime, services) {
+  constructor (frameworks, runtime, services, analyser) {
+    this._frameworks = frameworks
+    this._runtime = runtime
+    this._analyser = analyser
     this._history = []
     this._logs = []
     this.mockGlobalAPI()
@@ -34,6 +37,7 @@ class WeexNodeRunner {
       this._history.push(task)
     })
     global.WXEnvironment = env.mockWXEnvironment()
+    env.injectVuePlugin({ analyser: this._analyser })
     // Object.assign(console, env.mockConsole((type, ...args) => {
     //   this._logs.push({
     //     type,
@@ -82,6 +86,7 @@ class WeexNodeRunner {
       history: deepClone(this._history)
     }
     if (instance && instance.document) {
+      // console.log(Object.keys(instance))
       result.vdom = deepClone(instance.document.body || instance.document.documentElement)
     }
     return result
