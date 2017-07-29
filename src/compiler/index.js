@@ -1,3 +1,4 @@
+const eslint = require('./eslint')
 const { getJSBundleType } = require('../utils')
 
 // TODO: 检测代码是否需要编译
@@ -20,10 +21,13 @@ function injectGlobalTask (code) {
   return code
 }
 
-function compile (text, options) {
+function compile (text, analyser, options) {
   if (shouldCompile(text, options)) {
     // TODO: 编译 text 源码
   }
+
+  eslint(text, analyser)
+
   return new Promise(resolve => resolve(injectGlobalTask(text)))
 }
 
