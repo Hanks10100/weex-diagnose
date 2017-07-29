@@ -15,4 +15,5 @@ module.exports = function textReporter (report, options = {}) {
   // console.log(generateVanillaCode(report.history))
   // printHistory(report.history)
   printSummary(report.summary)
+  return report
 }

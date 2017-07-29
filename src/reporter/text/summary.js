@@ -3,6 +3,7 @@ const { printTable } = require('./print')
 const { objectToArray } = require('../../utils')
 
 const propsLabel = {
+  bundleSize: { label: '代码体积', type: 'size', unit: 'Byte' },
   timecost: { label: '页面渲染时长(未必准确)', type: 'time', unit: 'us' },
   messageSize: { label: 'JS 与 Native 的通信数据量', type: 'size', unit: 'Byte' },
   totalCount: { label: '页面节点总数' },
@@ -10,6 +11,7 @@ const propsLabel = {
 }
 
 function printSummary (summary) {
+  // console.log(` => print summary`, summary)
   const { callCount, layers, cssProps } = summary
   // console.log('summary', Object.keys(summary))
 
@@ -35,10 +37,10 @@ function printSummary (summary) {
   for (const key in callCount) {
     console.log(`      ${key}: ${callCount[key]}`)
   }
-  console.log(' => 各层节点数:')
-  for (const key in layers) {
-    console.log(`      ${key}: ${layers[key].length}`)
-  }
+  // console.log(' => 各层节点数:')
+  // for (const key in layers) {
+  //   console.log(`      ${key}: ${layers[key].length}`)
+  // }
   // console.log(` => 样式属性的使用次数有:`)
   // for (const prop in cssProps) {
   //   console.log(`      ${prop}: ${cssProps[prop]}`)

@@ -1,17 +1,18 @@
 const read = require('./fetch')
 const compiler = require('./compiler')
 const runner = require('./runner')
-const analyser = require('./analyser')
-const Reporter = require('./reporter')
+const Analyser = require('./analyser')
+const report = require('./reporter')
 
 // entry
 function start (filePath, options = {}) {
+  const analyser = new Analyser(options)
   return read(filePath, options)
-    .then(text => compiler(text, options))
-    .then(code => runner(code, options))
+    .then(text => compiler(text, analyser, options))
+    .then(code => runner(code, analyser, options))
     .then(result => {
-      const reporter = new Reporter(options)
-      return reporter.report(analyser(result, options))
+      analyser.takeRecord('runner', result)
+      return report(analyser.getResult(), options)
     })
 }
 

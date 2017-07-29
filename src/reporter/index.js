@@ -2,21 +2,16 @@ const jsonfile = require('jsonfile')
 const textReporter = require('./text')
 const jsonReporter = require('./json')
 
-class Reporter {
-  constructor (options = {}) {
-    this._options = options
-    this._currentReporter = textReporter
-    switch (options.type) {
-      case 'text': this._currentReporter = textReporter; break;
-      case 'json': this._currentReporter = jsonReporter; break;
-      // case 'html': this._currentReporter = htmlReporter; break;
-    }
+function report (result, options) {
+  // console.log(` => start report`, result)
+  let currentReporter = textReporter
+  switch (options.type) {
+    case 'text': currentReporter = textReporter; break;
+    case 'json': currentReporter = jsonReporter; break;
+    // case 'html': this.currentReporter = htmlReporter; break;
   }
 
-  report (result) {
-    // console.log(` => start report`)
-    return this._currentReporter(result, this._options)
-  }
+  return textReporter(result, options)
 }
 
-module.exports = Reporter
+module.exports = report
