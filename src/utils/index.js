@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const runtime = require('./runtime.js')
 
 const uniqueId = (() => {
@@ -14,26 +15,25 @@ function isChinese (str) {
   return /^[\u4e00-\u9fa5]$/.test(str)
 }
 
-function lengthOf (str) {
-  return String(str).split('')
+function sizeof (param) {
+  if (param && typeof param === 'object') {
+    param = JSON.stringify(param)
+  }
+  return String(param).split('')
     .map(c => isChinese(c) ? 2 : 1)
     .reduce((a, b) => a + b)
 }
 
-function sizeof (object) {
-  return lengthOf(JSON.stringify(object))
-}
-
 function leftPad (str, N, space = ' ') {
-  return space.repeat(N - lengthOf(str)) + str
+  return space.repeat(N - sizeof(str)) + str
 }
 
 function rightPad (str, N, space = ' ') {
-  return str + space.repeat(N - lengthOf(str))
+  return str + space.repeat(N - sizeof(str))
 }
 
 function centerPad (str, N, space = ' ') {
-  const left = (N - lengthOf(str)) >> 1
+  const left = (N - sizeof(str)) >> 1
   return rightPad(space.repeat(left) + str, N, space)
 }
 
@@ -94,7 +94,7 @@ function accumulate (object, key, step = 1) {
   object[key] += step
 }
 
-function clonePlainObject (obj) {
+function deepClone (obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -128,7 +128,6 @@ module.exports = Object.assign({
   uniqueId,
   isURL,
   isChinese,
-  lengthOf,
   sizeof,
   leftPad,
   rightPad,
@@ -138,7 +137,7 @@ module.exports = Object.assign({
   microsecond,
   convertURL,
   accumulate,
-  clonePlainObject,
+  deepClone,
   forEachNode,
   objectToArray,
   isVueBundle,

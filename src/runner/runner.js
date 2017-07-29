@@ -1,7 +1,8 @@
+const _ = require('lodash')
 const env = require('./env')
 const modules = require('./modules')
 const components = require('./components')
-const { clonePlainObject, uniqueId } = require('../utils')
+const { deepClone, microsecond } = require('../utils')
 
 class WeexNodeRunner {
   constructor (frameworks, runtime, services) {
@@ -28,26 +29,28 @@ class WeexNodeRunner {
 
   mockGlobalAPI () {
     global.callNative = env.mockCallNative(_task => {
-      const task = clonePlainObject(_task)
-      task.timestamp = Date.now()
+      const task = deepClone(_task)
+      task.time = microsecond()
       this._history.push(task)
     })
     global.WXEnvironment = env.mockWXEnvironment()
-    Object.assign(console, env.mockConsole((type, ...args) => {
-      this._logs.push({
-        type,
-        timestamp: Date.now(),
-        text: args.join(' ')
-      })
-    }))
+    // Object.assign(console, env.mockConsole((type, ...args) => {
+    //   this._logs.push({
+    //     type,
+    //     time: microsecond(),
+    //     text: args.join(' ')
+    //   })
+    // }))
   }
 
   execute (code) {
     const createInstance = this._context.createInstance
+    const destroyInstance = this._context.destroyInstance
     return new Promise((resolve, reject) => {
       let instance = null
+      const instanceId = _.uniqueId()
       try {
-        instance = createInstance.call(null, uniqueId(), code)
+        instance = createInstance.call(null, instanceId, code)
       } catch (e) {
         this.reset()
         // console.log(` => catch in execute`)
@@ -58,6 +61,7 @@ class WeexNodeRunner {
       if (instance) {
         setTimeout(() => {
           const result = this.standardizeResult(instance)
+          destroyInstance(instanceId)
           this.reset()
           resolve(result)
         }, 100)
@@ -72,13 +76,13 @@ class WeexNodeRunner {
   }
 
   standardizeResult (instance) {
-    console.log(` => standardize result`)
+    // console.log(` => standardize result`)
     const result = {
-      logs: clonePlainObject(this._logs),
-      history: clonePlainObject(this._history)
+      logs: deepClone(this._logs),
+      history: deepClone(this._history)
     }
     if (instance && instance.document) {
-      result.vdom = clonePlainObject(instance.document.body)
+      result.vdom = deepClone(instance.document.body || instance.document.documentElement)
     }
     return result
   }

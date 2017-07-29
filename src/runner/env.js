@@ -7,7 +7,10 @@ function mockCallNative (taskHook) {
 }
 
 function mockWXEnvironment () {
-  return {}
+  return {
+    deviceWidth: 1080,
+    deviceHeight: 1920,
+  }
 }
 
 function mockConsole (hook) {

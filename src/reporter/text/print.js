@@ -1,4 +1,4 @@
-const { lengthOf, getPadFunction, mapObject } = require('../../utils')
+const { sizeof, getPadFunction, mapObject } = require('../../utils')
 
 // const borderTheme = [
 //   '    '.split(''),
@@ -33,7 +33,7 @@ function parseTable (table) {
   const columnLength = []
   table.forEach(row => {
     row.forEach((v, i) => {
-      columnLength[i] = Math.max(columnLength[i] || 0, lengthOf(v))
+      columnLength[i] = Math.max(columnLength[i] || 0, sizeof(v))
     })
   })
   return columnLength
