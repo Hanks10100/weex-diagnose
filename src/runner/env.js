@@ -1,9 +1,13 @@
+const atob = require('atob')
+const btoa = require('btoa')
 const VuePlugin = require('./plugin')
 
 function mockCallNative (taskHook) {
   return function callNative (id, tasks) {
     if (Array.isArray(tasks)) {
-      tasks.forEach(taskHook)
+      tasks.forEach(task => {
+        taskHook(task)
+      })
     }
   }
 }
@@ -13,6 +17,11 @@ function mockWXEnvironment () {
     deviceWidth: 1080,
     deviceHeight: 1920,
   }
+}
+
+function polyfill () {
+  global.atob = atob
+  global.btoa = btoa
 }
 
 function injectVuePlugin (options, hook) {
@@ -44,6 +53,7 @@ function resetConsole () {
 module.exports = {
   mockCallNative,
   mockWXEnvironment,
+  polyfill,
   injectVuePlugin,
   removeVuePlugin,
   mockConsole,

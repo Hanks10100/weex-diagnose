@@ -31,9 +31,11 @@ class WeexNodeRunner {
   }
 
   mockGlobalAPI () {
+    env.polyfill()
     global.callNative = env.mockCallNative(_task => {
-      const task = deepClone(_task)
-      task.time = microsecond()
+      const task = Object.assign({
+        time: microsecond()
+      }, _task)
       this._history.push(task)
     })
     global.WXEnvironment = env.mockWXEnvironment()
