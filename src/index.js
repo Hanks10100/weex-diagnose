@@ -1,4 +1,4 @@
-const read = require('./fetch')
+const { getContent } = require('./utils')
 const compiler = require('./compiler')
 const runner = require('./runner')
 const Analyser = require('./analyser')
@@ -7,7 +7,7 @@ const report = require('./reporter')
 // entry
 function start (filePath, options = {}) {
   const analyser = new Analyser(options)
-  return read(filePath, options)
+  return getContent(filePath, options)
     .then(text => compiler(text, analyser, options))
     .then(code => runner(code, analyser, options))
     .then(result => {

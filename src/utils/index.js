@@ -1,15 +1,10 @@
 const _ = require('lodash')
-const runtime = require('./runtime.js')
+const platform = require('./platform')
 
 const uniqueId = (() => {
   let uid = 1
   return () => (uid++).toString()
 })()
-
-const URLRE = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i
-function isURL (filePath) {
-  return URLRE.test(filePath)
-}
 
 function isChinese (str) {
   return /^[\u4e00-\u9fa5]$/.test(str)
@@ -53,12 +48,6 @@ function mapObject (object, fn) {
   return result
 }
 
-// 当前的微秒数
-function microsecond () {
-  const time = process.hrtime()
-  return time[0] * 1e6 + time[1] / 1e3
-}
-
 const versionRegExp = /^\s*\/\/ *(\{[^}]*\}) *\r?\n/
 function getJSBundleType (code) {
   const res = versionRegExp.exec(code)
@@ -74,28 +63,6 @@ function isVueBundle (text) {
 
 function isVueFile (text) {
   return false
-}
-
-const dotweRE = /^(https?\:\/\/dotwe\.org)\/(vue|weex)\/(\w+)$/i
-const wxtplRE = /^(https?\:\/\/.+)\?\_wx\_tpl\=(https?\:\/\/.+)$/i
-const tmallRE = /^https?\:\/\/pages\.tmall\.com.+\?\wh\_weex\=true/i
-function convertURL (url) {
-  // 解析 dotwe 中的链接
-  if (url.match(dotweRE)) {
-    return url.replace(dotweRE, ($, host, type, hash) => {
-      return `${host}/raw/dist/${hash}.bundle.${type === 'weex' ? 'js' : 'wx'}`
-    })
-  }
-
-  // 解析 playground 的拦截规则
-  if (url.match(wxtplRE)) {
-    return url.replace(wxtplRE, ($, mock, real) => real)
-  }
-
-  if (url.match(tmallRE)) {
-    return url.replace('?wh_weex', '?wh_native')
-  }
-  return url
 }
 
 function accumulate (object, key, step = 1) {
@@ -135,7 +102,6 @@ function objectToArray (object) {
 
 module.exports = Object.assign({
   uniqueId,
-  isURL,
   isChinese,
   sizeof,
   leftPad,
@@ -143,8 +109,6 @@ module.exports = Object.assign({
   centerPad,
   getPadFunction,
   mapObject,
-  microsecond,
-  convertURL,
   accumulate,
   deepClone,
   forEachNode,
@@ -152,4 +116,4 @@ module.exports = Object.assign({
   getJSBundleType,
   isVueBundle,
   isVueFile
-}, runtime)
+}, platform)
