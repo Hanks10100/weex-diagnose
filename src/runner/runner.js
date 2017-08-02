@@ -40,13 +40,13 @@ class WeexNodeRunner {
     })
     global.WXEnvironment = env.mockWXEnvironment()
     env.injectVuePlugin({ analyser: this._analyser })
-    // Object.assign(console, env.mockConsole((type, ...args) => {
-    //   this._logs.push({
-    //     type,
-    //     time: microsecond(),
-    //     text: args.join(' ')
-    //   })
-    // }))
+    Object.assign(console, env.mockConsole((level, ...args) => {
+      this._logs.push({
+        level,
+        time: microsecond(),
+        text: args.join(' ')
+      })
+    }))
   }
 
   execute (code) {

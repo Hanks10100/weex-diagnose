@@ -60,7 +60,6 @@ class Analyser {
 
   analyse () {
     // console.log(' => start analyse')
-    this.logs = analyseLogs(this._raw.logs)
     this.vdom = analyseVdom(this._raw.vdom)
     this.history = analyseHistory(this._raw.history)
     this.exception = analyseException(this._raw.exception)
@@ -69,6 +68,11 @@ class Analyser {
     this.warnings.push(...warnings)
     this.errors.push(...errors)
     // console.log(warnings)
+
+    const logs = analyseLogs(this._raw.logs)
+    this.warnings.push(...logs.warnings)
+    this.errors.push(...logs.errors)
+    this.messages = logs.messages
   }
 
   getResult () {
@@ -78,7 +82,7 @@ class Analyser {
       warnings: this.warnings,
       errors: this.errors,
       history: history.records,
-      logs: logs.records,
+      messages: this.messages,
       summary: Object.assign({
         bundleSize: _raw.bundleSize
       }, vdom.summary, history.summary),
