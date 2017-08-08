@@ -4,7 +4,10 @@ const compileVue = require('./transformer/vue')
 
 // TODO: 检测代码是否需要编译
 function shouldCompile (text, options) {
-  return false
+  const styleRE = /<\s*style\s*\w*>([^]*)<\/\s*style\s*>/
+  const scriptRE = /<\s*script.*>([^]*)<\/\s*script\s*>/
+  const templateRE = /<\s*template\s*>([^]*)<\/\s*template\s*>/
+  return templateRE.test(text)
 }
 
 function injectGlobalTask (code) {
