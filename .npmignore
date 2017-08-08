@@ -3,6 +3,10 @@ src/
 weex/
 doc/
 setup.sh
+package-lock.json
+
+*.log
+*.js.gz
 
 .babelrc
 .editorconfig

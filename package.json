@@ -12,7 +12,7 @@
     "lint"
   ],
   "bin": {
-    "weex-analyse": "./bin/weex-analyse"
+    "weex-diagnose": "./bin/weex-diagnose"
   },
   "author": "Hanks <zhanghan.me@gmail.com>",
   "license": "MIT",
