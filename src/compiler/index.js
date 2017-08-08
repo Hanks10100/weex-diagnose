@@ -1,10 +1,10 @@
 const eslint = require('./eslint')
 const { getJSBundleType } = require('../utils')
-const compileVue = require('./vue')
+const compileVue = require('./transformer/vue')
 
 // TODO: 检测代码是否需要编译
 function shouldCompile (text, options) {
-  return true
+  return false
 }
 
 function injectGlobalTask (code) {
@@ -24,16 +24,15 @@ function injectGlobalTask (code) {
 
 function compile (text, analyser, options) {
   if (shouldCompile(text, options)) {
-    // TODO: 编译 text 源码
-    console.log('shouldCompile')
-    compileVue('xxx', text, 'native').then(res => {
-      console.log(` => done`)
-      console.log(res.code)
+    // TODO: 校验源码格式
+    return compileVue(text).then(res => {
+      // console.log(` => done`, res.code)
+      eslint(res.code, analyser)
+      return res.code
     })
   }
 
-  // eslint(text, analyser)
-
+  eslint(text, analyser)
   return new Promise(resolve => resolve(injectGlobalTask(text)))
 }
 
