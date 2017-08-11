@@ -40,7 +40,7 @@ function preLoadLoader (mfs, name) {
     Object.keys(loaderConfigJson.dependencies || {}).forEach(dep => {
       preLoadLoader(mfs, dep)
     })
-  })
+  }, 0)
 }
 
 module.exports = function (mfs, loaders) {

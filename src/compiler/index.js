@@ -27,6 +27,7 @@ function injectGlobalTask (code) {
 
 function compile (text, analyser, options) {
   if (shouldCompile(text, options)) {
+    console.log(' => compiling the source code')
     // TODO: 校验源码格式
     return compileVue(text).then(res => {
       // console.log(` => done`, res.code)
