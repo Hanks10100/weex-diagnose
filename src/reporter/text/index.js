@@ -19,6 +19,9 @@ function generateVanillaCode (history) {
 }
 
 module.exports = function textReporter (report, options = {}) {
+  if (options.silent) {
+    return report
+  }
   generateVanillaCode(report.history)
   printHistory(report.history)
   // printLogs(report.messages)

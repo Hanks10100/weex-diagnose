@@ -1,14 +1,7 @@
 const formatter = require('./formatter')
 const { printTable } = require('./print')
 const { objectToArray } = require('../../utils')
-
-const propsLabel = {
-  bundleSize: { label: '代码体积', type: 'size', unit: 'Byte' },
-  timecost: { label: '页面渲染时长(未必准确)', type: 'time', unit: 'us' },
-  messageSize: { label: 'JS 与 Native 的通信数据量', type: 'size', unit: 'Byte' },
-  totalCount: { label: '页面节点总数' },
-  totalDepth: { label: '页面最大深度' },
-}
+const propsLabel = require('./labels')
 
 function printSummary (summary) {
   // console.log(` => print summary`, summary)
