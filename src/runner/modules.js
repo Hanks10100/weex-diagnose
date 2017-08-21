@@ -80,6 +80,10 @@ module.exports = {
     "setString",
     "getString"
   ],
+  "webSocket": [
+    "WebSocket",
+    "send"
+  ],
   "event": [
     "openURL"
   ]
