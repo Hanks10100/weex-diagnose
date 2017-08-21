@@ -1,7 +1,9 @@
 const path = require('path')
-const start = require('../../src')
+const diagnose = require('../../src')
 
-// const filePath = path.resolve(__dirname, '../vue/div.vue')
-const filePath = path.resolve(__dirname, '../jsbundle/list.js')
-
-start(filePath)
+diagnose([
+  path.resolve(__dirname, '../vue/div.vue'),
+  path.resolve(__dirname, '../jsbundle/list.js')
+]).then(results => {
+  // console.log(results)
+})

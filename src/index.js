@@ -4,7 +4,7 @@ const runner = require('./runner')
 const Analyser = require('./analyser')
 const report = require('./reporter')
 
-// entry
+// diagnose single file
 function start (filePath, options = {}) {
   const analyser = new Analyser(options)
   return getContent(filePath, options)
@@ -16,4 +16,12 @@ function start (filePath, options = {}) {
     })
 }
 
-module.exports = start
+// entry
+function diagnose (filePaths, options = {}) {
+  if (Array.isArray(filePaths)) {
+    return Promise.all(filePaths.map(fp => start(fp, options)))
+  }
+  return start(filePaths, options)
+}
+
+module.exports = diagnose
