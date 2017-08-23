@@ -1,17 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const getWebpackConfig = require('../configs/webpack.vue.config.js')
-const MemoryFileSystem = require('memory-fs')
-const preLoadLoaders = require('./preload')
+const mfs = require('./mfs')
 
 function setupCompiler (fileSystem, webpackConfig) {
-  preLoadLoaders(fileSystem, [
-    'css-loader',
-    'vue-style-loader',
-    'weex-loader',
-    'vue-loader'
-  ])
-
   const compiler = webpack(webpackConfig)
 
   compiler.inputFileSystem = fileSystem
@@ -28,7 +20,6 @@ function transform (code) {
     const entryPoint = path.join(directory, 'entry.js')
     const outputPoint = path.join(directory, 'output.js')
 
-    const mfs = new MemoryFileSystem()
     mfs.mkdirpSync(directory)
     mfs.writeFileSync(path.join(directory, 'App.vue'), code)
     mfs.writeFileSync(entryPoint, `

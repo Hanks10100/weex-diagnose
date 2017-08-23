@@ -1,3 +1,4 @@
+const md5 = require('md5')
 const eslint = require('./eslint')
 const { getJSBundleType } = require('../utils')
 const compileVue = require('./transformer/vue')
@@ -25,12 +26,20 @@ function injectGlobalTask (code) {
   return code
 }
 
+const codeCaches = {}
 async function compile (text, analyser, options) {
+  // TODO: 校验源码格式
   if (shouldCompile(text, options)) {
+    const hash = md5(text)
+    if (codeCaches[hash]) {
+      // console.log(` => use cache`)
+      return codeCaches[hash]
+    }
+
     // console.log(' => compiling the source code')
-    // TODO: 校验源码格式
     const res = await compileVue(text)
     eslint(res.code, analyser)
+    codeCaches[hash] = res.code
     return res.code
   }
 
