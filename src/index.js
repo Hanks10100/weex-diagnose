@@ -8,29 +8,15 @@ const report = require('./reporter')
 const defaultOptions = {
   src: null,
   code: null,
-  count: 1,
+  iteration: 1,
   packages: {
     'weex-vue-framework': null,
     'weex-js-runtime': null
   }
 }
 
-// run single task
-async function runTask (task, opt) {
-  const options = Object.assign({}, opt)
-  if (_.isString(task)) {
-    options.src = task
-  }
-  if (_.isPlainObject(task)) {
-    Object.assign(options, defaultOptions, task)
-  }
-
-  if (!options.src && !options.code) {
-    // console.log(' => invalid task')
-    return null
-  }
-
-  console.log(` => run task ${options.src}`)
+async function executeOnce (task, options) {
+  // console.log(` => run task ${options.src}`)
   const analyser = new Analyser(options)
 
   if (!options.code) {
@@ -44,16 +30,37 @@ async function runTask (task, opt) {
   return report(analyser.getResult(), options)
 }
 
+// run single task
+async function runTask (task, sharedOptions) {
+  const options = Object.assign({}, sharedOptions)
+  if (_.isString(task)) {
+    options.src = task
+  }
+  if (_.isPlainObject(task)) {
+    Object.assign(options, defaultOptions, task)
+  }
+  if (!options.src && !options.code) {
+    // console.log(' => invalid task')
+    return null
+  }
+  const results = []
+  let N = options.iteration || 1
+  while (N--) {
+    results.push(await executeOnce (task, options))
+  }
+  return results
+}
+
 // entry
-async function diagnose (tasks, options = {}) {
+async function diagnose (tasks, sharedOptions = {}) {
   if (Array.isArray(tasks)) {
     const reports = []
     for (let i = 0; i < tasks.length; ++i) {
-      reports.push(await runTask(tasks[i], options))
+      reports.push(await runTask(tasks[i], sharedOptions))
     }
     return reports
   }
-  return await runTask(tasks, options)
+  return await runTask(tasks, sharedOptions)
 }
 
 module.exports = diagnose

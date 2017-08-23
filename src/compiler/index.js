@@ -27,7 +27,7 @@ function injectGlobalTask (code) {
 
 async function compile (text, analyser, options) {
   if (shouldCompile(text, options)) {
-    console.log(' => compiling the source code')
+    // console.log(' => compiling the source code')
     // TODO: 校验源码格式
     const res = await compileVue(text)
     eslint(res.code, analyser)
