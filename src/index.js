@@ -51,7 +51,7 @@ function diagnose (tasks, options = {}) {
   if (Array.isArray(tasks)) {
     return Promise.all(tasks.map(task => runTask(task, options)))
   }
-  return start(tasks, options)
+  return runTask(tasks, options)
 }
 
 module.exports = diagnose

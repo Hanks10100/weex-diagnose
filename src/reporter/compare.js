@@ -20,6 +20,19 @@ function compareReports (reports) {
       summary.push(readable)
     })
     printTable(summary)
+
+    // const table = [supportedProps.map(n => propsLabel[n].label)]
+    //   .concat(reports.map(report => {
+    //     const chosenSummary = _.pick(report.summary, supportedProps)
+    //     const readable = []
+    //     for (const prop in chosenSummary) {
+    //       const { label, type } = propsLabel[prop]
+    //       readable.push(formatter(type, chosenSummary[prop]))
+    //     }
+    //     return readable
+    //   }))
+    // const result = _.unzip(table)
+    // printTable(result)
   }
 }
 

@@ -20,7 +20,7 @@ function runner (jsbundle, analyser) {
   // console.log(' => run runner')
   // console.log(jsbundle)
   analyser.takeRecord('bundleSize', sizeof(jsbundle))
-  const runtime = getWeexRuntime('0.21.9')
+  const runtime = getWeexRuntime()
   const frameworks = getFrameworks()
   const nodeRunner = new WeexNodeRunner(frameworks, runtime, {}, analyser)
 
