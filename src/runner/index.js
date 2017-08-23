@@ -24,11 +24,12 @@ function runner (jsbundle, analyser) {
   const frameworks = getFrameworks()
   const nodeRunner = new WeexNodeRunner(frameworks, runtime, {}, analyser)
 
+  // TODO: handle exceptions
   return nodeRunner.execute(jsbundle)
-    .catch(result => {
-      handleError(result)
-      return result
-    })
+    // .catch(result => {
+    //   handleError(result)
+    //   return result
+    // })
 
 }
 

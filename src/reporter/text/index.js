@@ -22,8 +22,8 @@ module.exports = function textReporter (report, options = {}) {
   if (options.silent) {
     return report
   }
-  generateVanillaCode(report.history)
-  printHistory(report.history)
+  // generateVanillaCode(report.history)
+  // printHistory(report.history)
   // printLogs(report.messages)
   printSummary(report.summary)
   printWarnings(report.warnings)

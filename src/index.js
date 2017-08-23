@@ -16,7 +16,7 @@ const defaultOptions = {
 }
 
 // run single task
-function runTask (task, opt) {
+async function runTask (task, opt) {
   const options = Object.assign({}, opt)
   if (_.isString(task)) {
     options.src = task
@@ -25,33 +25,35 @@ function runTask (task, opt) {
     Object.assign(options, defaultOptions, task)
   }
 
-  const { src, code } = options
-  if (!src && !code) {
-    console.log(' => invalid task')
+  if (!options.src && !options.code) {
+    // console.log(' => invalid task')
     return null
   }
 
+  console.log(` => run task ${options.src}`)
   const analyser = new Analyser(options)
-  return new Promise(resolve => {
-    if (code) {
-      return resolve(code)
-    }
-    return resolve(
-      getContent(src, options).then(text => compiler(text, analyser, options))
-    )
-  }).then(code => runner(code, analyser, options))
-    .then(result => {
-      analyser.takeRecord('runner', result)
-      return report(analyser.getResult(), options)
-    })
+
+  if (!options.code) {
+    const text = await getContent(options.src, options)
+    options.code = await compiler(text, analyser, options)
+  }
+
+  const result = await runner(options.code, analyser, options)
+
+  analyser.takeRecord('runner', result)
+  return report(analyser.getResult(), options)
 }
 
 // entry
-function diagnose (tasks, options = {}) {
+async function diagnose (tasks, options = {}) {
   if (Array.isArray(tasks)) {
-    return Promise.all(tasks.map(task => runTask(task, options)))
+    const reports = []
+    for (let i = 0; i < tasks.length; ++i) {
+      reports.push(await runTask(tasks[i], options))
+    }
+    return reports
   }
-  return runTask(tasks, options)
+  return await runTask(tasks, options)
 }
 
 module.exports = diagnose

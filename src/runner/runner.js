@@ -2,7 +2,7 @@ const _ = require('lodash')
 const env = require('./env')
 const modules = require('./modules')
 const components = require('./components')
-const { deepClone, microsecond } = require('../utils')
+const { deepClone, microsecond, delay } = require('../utils')
 
 class WeexNodeRunner {
   constructor (frameworks, runtime, services, analyser) {
@@ -49,30 +49,27 @@ class WeexNodeRunner {
     }))
   }
 
-  execute (code) {
+  async execute (code) {
     const createInstance = this._context.createInstance
     const destroyInstance = this._context.destroyInstance
-    return new Promise((resolve, reject) => {
-      let instance = null
-      const instanceId = _.uniqueId()
-      try {
-        instance = createInstance.call(null, instanceId, code)
-      } catch (e) {
-        this.reset()
-        // console.log(` => catch in execute`)
-        const result = this.standardizeResult(instance)
-        result.exception = e
-        reject(result)
-      }
-      if (instance) {
-        setTimeout(() => {
-          const result = this.standardizeResult(instance)
-          destroyInstance(instanceId)
-          this.reset()
-          resolve(result)
-        }, 100)
-      }
-    })
+
+    let instance = null
+    const instanceId = _.uniqueId()
+    try {
+      instance = createInstance.call(null, instanceId, code)
+    } catch (e) {
+      this.reset()
+      // console.log(` => catch in execute`)
+      const result = this.standardizeResult(instance)
+      result.exception = e
+    }
+    if (instance) {
+      await delay(30)
+      const result = this.standardizeResult(instance)
+      destroyInstance(instanceId)
+      this.reset()
+      return result
+    }
   }
 
   reset () {

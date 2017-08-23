@@ -10,6 +10,8 @@ function isChinese (str) {
   return /^[\u4e00-\u9fa5]$/.test(str)
 }
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 function sizeof (param) {
   if (param && typeof param === 'object') {
     param = JSON.stringify(param)
@@ -103,6 +105,7 @@ function objectToArray (object) {
 module.exports = Object.assign({
   uniqueId,
   isChinese,
+  delay,
   sizeof,
   leftPad,
   rightPad,

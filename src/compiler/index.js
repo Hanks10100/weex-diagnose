@@ -25,19 +25,17 @@ function injectGlobalTask (code) {
   return code
 }
 
-function compile (text, analyser, options) {
+async function compile (text, analyser, options) {
   if (shouldCompile(text, options)) {
     console.log(' => compiling the source code')
     // TODO: 校验源码格式
-    return compileVue(text).then(res => {
-      // console.log(` => done`, res.code)
-      eslint(res.code, analyser)
-      return res.code
-    })
+    const res = await compileVue(text)
+    eslint(res.code, analyser)
+    return res.code
   }
 
   eslint(text, analyser)
-  return new Promise(resolve => resolve(injectGlobalTask(text)))
+  return injectGlobalTask(text)
 }
 
 module.exports = compile
