@@ -4,6 +4,7 @@ const WeexNodeRunner = require('./runner')
 const { sizeof } = require('../utils')
 
 function getWeexRuntime (version) {
+  // console.log(` => runtime version is ${version}`)
   if (version) {
     const folder = `${semver.major(version)}.${semver.minor(version)}`
     return require(`weex-js-runtime-packages/${folder}/${version}`)
@@ -16,11 +17,11 @@ function handleError (error) {
   // console.log(error)
 }
 
-function runner (jsbundle, analyser) {
+function runner (jsbundle, analyser, options = {}) {
   // console.log(' => run runner')
   // console.log(jsbundle)
   analyser.takeRecord('bundleSize', sizeof(jsbundle))
-  const runtime = getWeexRuntime()
+  const runtime = getWeexRuntime(options.packages['weex-js-runtime'])
   const frameworks = getFrameworks()
   const nodeRunner = new WeexNodeRunner(frameworks, runtime, {}, analyser)
 

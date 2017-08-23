@@ -9,13 +9,10 @@ const defaultOptions = {
   src: null,
   code: null,
   iteration: 1,
-  packages: {
-    'weex-vue-framework': null,
-    'weex-js-runtime': null
-  }
+  packages: {}
 }
 
-async function executeOnce (task, options) {
+async function executeOnce (task, options = {}) {
   // console.log(` => run task ${options.src}`)
   const analyser = new Analyser(options)
 
@@ -32,20 +29,26 @@ async function executeOnce (task, options) {
 
 // run single task
 async function runTask (task, sharedOptions) {
-  const options = Object.assign({}, sharedOptions)
+  const options = Object.assign({}, defaultOptions, sharedOptions)
   if (_.isString(task)) {
     options.src = task
   }
   if (_.isPlainObject(task)) {
-    Object.assign(options, defaultOptions, task)
+    Object.assign(options, task)
   }
   if (!options.src && !options.code) {
     // console.log(' => invalid task')
     return null
   }
   const results = []
-  let N = options.iteration || 1
-  while (N--) {
+  console.log(` => [running] src: ${options.src}`)
+  if (Object.keys(options.packages || {}).length) {
+    console.log(`              packages: ${JSON.stringify(options.packages)}`)
+  }
+  for (let i = 1; i <= options.iteration; ++i) {
+    if (options.iteration > 1) {
+      console.log(`    iteration ${i}`)
+    }
     results.push(await executeOnce (task, options))
   }
   return results

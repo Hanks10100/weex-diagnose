@@ -8,7 +8,8 @@ class Analyser {
   constructor (options = {}) {
     this._raw = {
       info: {
-        src: options.src
+        src: options.src,
+        packages: Object.assign({}, options.packages)
       },
       lifecycle: [],
       eslint: [],

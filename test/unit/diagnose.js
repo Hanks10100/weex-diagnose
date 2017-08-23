@@ -37,6 +37,35 @@ diagnose('http://dotwe.org/vue/cfcf3ca0b5c5a268b90890378b44d511')
 // })
 
 // diagnose([
+//   {
+//     packages: { 'weex-js-runtime': '0.21.7' }
+//   }, {
+//     packages: { 'weex-js-runtime': '0.21.8' }
+//   }, {
+//     packages: { 'weex-js-runtime': '0.21.9' }
+//   }
+// ], {
+//   src: 'http://dotwe.org/vue/37342fb601ca1ff68d8459fdf5c35175',
+//   iteration: 5,
+//   silent: true,
+// }).then(reports => {
+//   compare(reports)
+// })
+
+// diagnose([
+//   // .we 的例子
+//   'http://dotwe.org/weex/e76b69e8308f9e7d4c357c8e7cca1df6',
+//   'http://dotwe.org/weex/19f2d50073573075dcc9501dceb6bfa6',
+
+//   // .vue 的例子
+//   'http://dotwe.org/vue/b70e50460b550b06c6106ac70632d7df',
+//   'http://dotwe.org/vue/8d0ff654ce02639508a57f84b5afc72c',
+// ], { iteration: 10, silent: true }).then(reports => {
+//   // console.log(reports)
+//   compare(reports)
+// })
+
+// diagnose([
 //   // .we 的例子
 //   'http://dotwe.org/weex/e76b69e8308f9e7d4c357c8e7cca1df6',
 //   'http://dotwe.org/weex/993a57b338ae04e103734d09e53d1127',

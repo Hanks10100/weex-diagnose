@@ -17,7 +17,7 @@ function compareReports (reportGroup = []) {
       table.push(averange)
     }
 
-    console.log(info)
+    console.log(`\nsrc: ${info.src}`)
     printTable(table)
   })
 
