@@ -2,12 +2,39 @@ const path = require('path')
 const diagnose = require('../../src')
 const compare = require('../../src/reporter/compare')
 
-diagnose([
-  path.resolve(__dirname, '../vue/div.vue'),
-  path.resolve(__dirname, '../jsbundle/list.js')
-]).then(reports => {
-  // console.log(reports)
+// diagnose([
+//   path.resolve(__dirname, '../jsbundle/list.js'),
+//   path.resolve(__dirname, '../vue/div.vue'),
+//   {
+//     src: path.resolve(__dirname, '../vue/div.vue'),
+//     iteration: 3
+//   }
+// ]).then(reports => {
+//   // console.log(reports)
+//   compare(reports)
+// })
+
+diagnose('http://dotwe.org/vue/cfcf3ca0b5c5a268b90890378b44d511')
+.then(report => {
+  // console.log(report)
+  compare([report])
 })
+
+// diagnose([
+//   // .we 的例子
+//   {
+//     src: 'http://dotwe.org/weex/cd494ae8a5fedf4750de7d4125295b69',
+//     iteration: 3
+//   },
+
+//   // .vue 的例子
+//   {
+//     src: 'http://dotwe.org/vue/cfcf3ca0b5c5a268b90890378b44d511',
+//     iteration: 3
+//   }
+// ], { silent: true }).then(reports => {
+//   compare(reports)
+// })
 
 // diagnose([
 //   // .we 的例子

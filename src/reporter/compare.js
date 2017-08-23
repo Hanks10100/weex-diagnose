@@ -7,19 +7,58 @@ const supportedProps = [
   'bundleSize', 'totalCount', 'totalDepth', 'messageSize', 'timecost'
 ]
 
-function compareReports (reports) {
+function compareReports (reportGroup = []) {
+  const compareTable = []
+  reportGroup.forEach(reports => {
+    const { results, averange, info } = parseResult(reports)
+    compareTable.push(averange)
+    const table = Array.from(results)
+    if (reports.length > 1) {
+      table.push(averange)
+    }
+
+    console.log(info)
+    printTable(table)
+  })
+
+  const N = reportGroup.length
+  if (N > 1) {
+    console.log(`\nCompare the ${N} results:`)
+    printTable(compareTable)
+  }
+}
+
+function parseResult (reports = []) {
   if (Array.isArray(reports)) {
-    const summary = []
-    reports.forEach(report => {
+    const info = _.sample(reports).info
+    const results = []
+    const summary = {}
+    reports.forEach((report, i) => {
       const chosenSummary = _.pick(report.summary, supportedProps)
-      const readable = {}
+      const readable = { '序号': i+1 }
       for (const prop in chosenSummary) {
         const { label, type } = propsLabel[prop]
+        if (summary[prop] === undefined) {
+          summary[prop] = 0
+        }
+        summary[prop] += chosenSummary[prop]
         readable[label] = formatter(type, chosenSummary[prop])
       }
-      summary.push(readable)
+      results.push(readable)
     })
-    printTable(summary)
+
+    const N = reports.length
+    const averange = { '序号': '平均值' }
+    for (const key in summary) {
+      const res = propsLabel[key]
+      if (res) {
+        averange[res.label] = formatter(res.type, summary[key] / N)
+      } else {
+        averange[key] = '--'
+      }
+    }
+
+    return { results, averange, info }
 
     // const table = [supportedProps.map(n => propsLabel[n].label)]
     //   .concat(reports.map(report => {

@@ -5,8 +5,11 @@ const analyseHistory = require('./history')
 const analyseException = require('./exception')
 
 class Analyser {
-  constructor () {
+  constructor (options = {}) {
     this._raw = {
+      info: {
+        src: options.src
+      },
       lifecycle: [],
       eslint: [],
       history: {},
@@ -22,6 +25,10 @@ class Analyser {
     // console.log(` => take record form ${type}`)
 
     switch (type) {
+      case 'info': {
+        Object.assign(this._raw.info, record)
+      } break
+
       case 'runner': {
         Object.assign(this._raw, record)
       } break
@@ -60,6 +67,7 @@ class Analyser {
 
   analyse () {
     // console.log(' => start analyse')
+    this.info = this._raw.info
     this.vdom = analyseVdom(this._raw.vdom)
     this.history = analyseHistory(this._raw.history)
     this.exception = analyseException(this._raw.exception)
@@ -79,6 +87,7 @@ class Analyser {
     this.analyse()
     const { logs, vdom, history, exception, _raw } = this
     return {
+      info: this.info,
       warnings: this.warnings,
       errors: this.errors,
       history: history.records,
