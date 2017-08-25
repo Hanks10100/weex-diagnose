@@ -16,6 +16,6 @@ async function compareBundle(bundles) {
 
 // 对比 js bundle 的执行效率
 compareBundle([
-  'http://dotwe.org/weex/e76b69e8308f9e7d4c357c8e7cca1df6',
-  'http://dotwe.org/weex/993a57b338ae04e103734d09e53d1127',
+  'http://dotwe.org/vue/268e6dee6d3558fe4cc18a4279ef8c15',
+  'http://dotwe.org/vue/72c820576d318ab3487a173f0fa42dba',
 ])
