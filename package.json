@@ -4,6 +4,7 @@
   "description": "Diagnose .vue files and js bundle within Weex context",
   "main": "index.js",
   "scripts": {
+    "benchmark": "node test/unit/benchmark.js",
     "test": "node test/unit/diagnose.js"
   },
   "keywords": [

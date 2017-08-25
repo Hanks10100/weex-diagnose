@@ -42,9 +42,9 @@ async function runTask (task, sharedOptions) {
   }
   const results = []
   console.log(` => [running] src: ${options.src}`)
-  if (Object.keys(options.packages || {}).length) {
-    console.log(`              packages: ${JSON.stringify(options.packages)}`)
-  }
+  // if (Object.keys(options.packages || {}).length) {
+  //   console.log(`              packages: ${JSON.stringify(options.packages)}`)
+  // }
   for (let i = 1; i <= options.iteration; ++i) {
     if (options.iteration > 1) {
       console.log(`    iteration ${i}`)

@@ -7,8 +7,20 @@ const supportedProps = [
   'bundleSize', 'totalCount', 'totalDepth', 'messageSize', 'timecost'
 ]
 
+function toReadable (array) {
+  return array.map((object, i) => {
+    const readable = { 'No.': i+1 }
+    for (const key in object) {
+      const { label, type } = propsLabel[key]
+      readable[label] = formatter(type, object[key])
+      // readable[key] = formatter(type, object[key])
+    }
+    return readable
+  })
+}
+
 function compareReports (reportGroup = []) {
-  const compareTable = []
+  let compareTable = []
   reportGroup.forEach(reports => {
     const { results, averange, info } = parseResult(reports)
     compareTable.push(averange)
@@ -22,6 +34,19 @@ function compareReports (reportGroup = []) {
   })
 
   const N = reportGroup.length
+
+  if (N === 2) {
+    const [A, B] = compareTable
+    const rate = { 'No.': 'compare' }
+    for (const key in B) {
+      rate[key] = (100 * B[key] / A[key]).toFixed(2) + '%'
+    }
+    compareTable = toReadable(compareTable)
+    compareTable.push(rate)
+  } else {
+    compareTable = toReadable(compareTable)
+  }
+
   if (N > 1) {
     console.log(`\nCompare the ${N} results:`)
     printTable(compareTable)
@@ -48,14 +73,9 @@ function parseResult (reports = []) {
     })
 
     const N = reports.length
-    const averange = { '序号': '平均值' }
+    const averange = {}
     for (const key in summary) {
-      const res = propsLabel[key]
-      if (res) {
-        averange[res.label] = formatter(res.type, summary[key] / N)
-      } else {
-        averange[key] = '--'
-      }
+      averange[key] = summary[key] / N
     }
 
     return { results, averange, info }

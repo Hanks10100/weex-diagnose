@@ -4,21 +4,17 @@ const compare = require('../../src/reporter/compare')
 
 // diagnose([
 //   path.resolve(__dirname, '../jsbundle/list.js'),
-//   path.resolve(__dirname, '../vue/div.vue'),
-//   {
-//     src: path.resolve(__dirname, '../vue/div.vue'),
-//     iteration: 3
-//   }
+//   path.resolve(__dirname, '../vue/div.vue')
 // ]).then(reports => {
 //   // console.log(reports)
 //   compare(reports)
 // })
 
-diagnose('http://dotwe.org/vue/cfcf3ca0b5c5a268b90890378b44d511')
-.then(report => {
-  // console.log(report)
-  compare([report])
-})
+diagnose(path.resolve(__dirname, '../vue/div.vue'))
+// .then(report => {
+//   // console.log(report)
+//   compare([report])
+// })
 
 // diagnose([
 //   // .we 的例子
@@ -43,9 +39,10 @@ diagnose('http://dotwe.org/vue/cfcf3ca0b5c5a268b90890378b44d511')
 //     packages: { 'weex-js-runtime': '0.21.8' }
 //   }, {
 //     packages: { 'weex-js-runtime': '0.21.9' }
-//   }
+//   },
+//   {}
 // ], {
-//   src: 'http://dotwe.org/vue/37342fb601ca1ff68d8459fdf5c35175',
+//   src: 'http://dotwe.org/vue/8d0ff654ce02639508a57f84b5afc72c',
 //   iteration: 5,
 //   silent: true,
 // }).then(reports => {
