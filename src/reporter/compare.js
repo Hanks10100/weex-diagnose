@@ -7,16 +7,16 @@ const supportedProps = [
   'bundleSize', 'totalCount', 'totalDepth', 'messageSize', 'timecost'
 ]
 
-function toReadable (array) {
-  return array.map((object, i) => {
-    const readable = { 'No.': i+1 }
-    for (const key in object) {
-      const { label, type } = propsLabel[key]
-      readable[label] = formatter(type, object[key])
-      // readable[key] = formatter(type, object[key])
-    }
-    return readable
-  })
+function toReadable (object, i) {
+  const readable = {
+    '序号': (typeof i === 'number') ? i+1 : '平均值'
+  }
+  for (const key in object) {
+    const { label, type } = propsLabel[key]
+    readable[label] = formatter(type, object[key])
+    // readable[key] = formatter(type, object[key])
+  }
+  return readable
 }
 
 function compareReports (reportGroup = []) {
@@ -26,25 +26,25 @@ function compareReports (reportGroup = []) {
     compareTable.push(averange)
     const table = Array.from(results)
     if (reports.length > 1) {
-      table.push(averange)
+      table.push(toReadable(averange))
     }
 
-    console.log(`\nsrc: ${info.src}`)
-    printTable(table)
+    // console.log(`\nsrc: ${info.src}`)
+    // printTable(table)
   })
 
   const N = reportGroup.length
 
   if (N === 2) {
     const [A, B] = compareTable
-    const rate = { 'No.': 'compare' }
+    const rate = { '序号': '对比' }
     for (const key in B) {
       rate[key] = (100 * B[key] / A[key]).toFixed(2) + '%'
     }
-    compareTable = toReadable(compareTable)
+    compareTable = compareTable.map(toReadable)
     compareTable.push(rate)
   } else {
-    compareTable = toReadable(compareTable)
+    compareTable = compareTable.map(toReadable)
   }
 
   if (N > 1) {

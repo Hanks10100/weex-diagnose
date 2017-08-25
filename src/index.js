@@ -46,9 +46,9 @@ async function runTask (task, sharedOptions) {
   //   console.log(`              packages: ${JSON.stringify(options.packages)}`)
   // }
   for (let i = 1; i <= options.iteration; ++i) {
-    if (options.iteration > 1) {
-      console.log(`    iteration ${i}`)
-    }
+    // if (options.iteration > 1) {
+    //   console.log(`    iteration ${i}`)
+    // }
     results.push(await executeOnce (task, options))
   }
   return results

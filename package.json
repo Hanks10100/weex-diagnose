@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "benchmark": "node test/unit/benchmark.js",
+    "compare": "node test/unit/compare.js",
     "test": "node test/unit/diagnose.js"
   },
   "keywords": [
