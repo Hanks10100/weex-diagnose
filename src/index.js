@@ -16,6 +16,12 @@ async function executeOnce (task, options = {}) {
   // console.log(` => run task ${options.src}`)
   const analyser = new Analyser(options)
 
+  if (options.isZebra) {
+    const text = await getContent(options.src, options)
+    analyser.takeRecord('zebra', linter(text, options))
+    return report(analyser.getResult(), options)
+  }
+
   if (!options.code) {
     const text = await getContent(options.src, options)
     options.code = await compiler(text, analyser, options)

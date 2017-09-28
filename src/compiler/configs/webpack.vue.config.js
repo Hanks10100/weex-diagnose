@@ -27,5 +27,8 @@ module.exports = (directory, entry) => ({
       }
     ]
   },
+  externals: {
+    mui: true
+  },
   plugins: [bannerPlugin]
 })

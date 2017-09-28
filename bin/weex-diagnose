@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 
 var program = require('commander')
-var start = require('../src')
+var diagnose = require('../src')
 
 program
   .version(require('../package').version)
   .usage('[options] <path>')
   .option('-s, --silent', 'Donot print the results in console.')
+  .option('-z, --zebra', 'Diagnose zebra moudle.')
   .option('-o, --output <dest>', 'Write the results into a json file.')
   .parse(process.argv)
 
 // 执行操作
 function run (filePath, options) {
   if (filePath) {
-    start(filePath, options)
+    diagnose(filePath, options)
   } else {
     program.help()
   }
@@ -21,5 +22,6 @@ function run (filePath, options) {
 
 run(program.args[program.args.length - 1], {
   silent: program.silent,
+  isZebra: program.zebra,
   output: program.output
 })

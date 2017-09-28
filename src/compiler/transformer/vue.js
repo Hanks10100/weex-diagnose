@@ -22,6 +22,7 @@ function transform (code) {
 
     mfs.mkdirpSync(directory)
     mfs.writeFileSync(path.join(directory, 'App.vue'), code)
+    mfs.writeFileSync(outputPoint, '\n')
     mfs.writeFileSync(entryPoint, `
       import App from './App.vue'
       App.el = '#root'
@@ -41,7 +42,6 @@ function transform (code) {
         const logs = stats.toJson().errors
         const code = mfs.readFileSync(outputPoint).toString()
         mfs.unlink(outputPoint, () => {})
-
         resolve({ logs, code })
 			})
 		} catch (e) {
