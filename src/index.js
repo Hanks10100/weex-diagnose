@@ -1,9 +1,11 @@
 const _ = require('lodash')
 const { getContent } = require('./utils')
 const compiler = require('./compiler')
+const linter = require('./linter')
 const runner = require('./runner')
 const Analyser = require('./analyser')
 const report = require('./reporter')
+const walk = require('./walk')
 
 const defaultOptions = {
   src: null,
@@ -46,8 +48,9 @@ async function runTask (task, sharedOptions) {
     // console.log(' => invalid task')
     return null
   }
+
   const results = []
-  console.log(` => [running] src: ${options.src}`)
+  console.log(` => [diagnose] ${options.src}`)
   // if (Object.keys(options.packages || {}).length) {
   //   console.log(`              packages: ${JSON.stringify(options.packages)}`)
   // }
@@ -55,17 +58,26 @@ async function runTask (task, sharedOptions) {
     // if (options.iteration > 1) {
     //   console.log(`    iteration ${i}`)
     // }
-    results.push(await executeOnce (task, options))
+    results.push(await executeOnce(task, options))
   }
   return results
 }
 
 // entry
 async function diagnose (tasks, sharedOptions = {}) {
+  if (!tasks) return
   if (Array.isArray(tasks)) {
     const reports = []
     for (let i = 0; i < tasks.length; ++i) {
       reports.push(await runTask(tasks[i], sharedOptions))
+    }
+    return reports
+  }
+  if (sharedOptions.isDirectory) {
+    const files = walk(_.isString(tasks) ? tasks : tasks.src)
+    const reports = []
+    for (let i = 0; i < files.length; ++i) {
+      reports.push(await runTask(files[i], sharedOptions))
     }
     return reports
   }
