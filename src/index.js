@@ -20,7 +20,7 @@ async function executeOnce (task, options = {}) {
 
   if (options.isZebra) {
     const text = await getContent(options.src, options)
-    analyser.takeRecord('syntax', linter(text, options))
+    analyser.takeRecord('syntax', await linter(text, options))
     return report(analyser.getResult(), options)
   }
 

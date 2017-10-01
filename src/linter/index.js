@@ -3,7 +3,7 @@ const lintScript = require('./script')
 const lintStyle = require('./style')
 const lintTemplate = require('./template')
 
-function linter (code, options) {
+async function linter (code, options) {
   const doc = parse5.parseFragment(code, {
     treeAdapter: parse5.treeAdapters.default,
     locationInfo: true
@@ -11,7 +11,8 @@ function linter (code, options) {
   const style = []
   const script = []
   const template = {}
-  doc.childNodes.forEach(node => {
+  for (let i = 0; i < doc.childNodes.length; ++i) {
+    const node = doc.childNodes[i]
     let start = end = line = column = 0
     if (node.__location) {
       const __location = node.__location
@@ -32,7 +33,7 @@ function linter (code, options) {
       // console.log(line, column, start, end)
       style.push({
         location: { line, column, start, end },
-        messages: lintStyle(content, node)
+        messages: await lintStyle(content, node)
       })
     }
 
@@ -47,7 +48,7 @@ function linter (code, options) {
       template.location = { line, column, start, end }
       template.messages = lintTemplate(content, node)
     }
-  })
+  }
   return { style, script, template }
 }
 

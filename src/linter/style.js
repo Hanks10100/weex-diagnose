@@ -1,14 +1,37 @@
+const stylus = require('stylus')
 const weexStyler = require('weex-styler')
 const styleValidator = require('weex-style-validator')
 
-function lintStyle (cssText, node) {
+async function compileStylus (source) {
+  return new Promise((resolve, reject) => {
+    stylus.render(source, { filename: 'whatever.css' }, (err, css) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(css)
+    })
+  })
+}
+
+async function lintStyle (cssText, node) {
   const results = []
   if (node && node.attrs) {
-    if (!node.attrs.some(({ name, value }) => name === 'scoped')) {
+    if (!node.attrs.some(({ name }) => name === 'scoped')) {
       results.push({
         column: 8, line: 1,
-        reason: '<style> must be scoped!'
+        reason: 'ERROR: <style> must be scoped!'
       })
+    }
+    for (let i = 0; i < node.attrs.length; ++i) {
+      const { name, value } = node.attrs[i]
+      if (name === 'lang' && value === 'stylus') {
+        results.push({
+          column: 0, line: 1,
+          reason: 'NOTE: this file is using stylus, the line number in <style> will be mismatch.'
+        })
+        cssText = await compileStylus(cssText)
+        // console.log(cssText)
+      }
     }
   }
   weexStyler.parse(cssText, (err, data) => {
