@@ -2,6 +2,11 @@ const stylus = require('stylus')
 const weexStyler = require('weex-styler')
 const styleValidator = require('weex-style-validator')
 
+const ignoreStyleMessage = [
+  /^NOTE\: unit \`px\` is not supported/,
+  /^NOTE\: property value \`\#\w{3}\`/
+]
+
 async function compileStylus (source) {
   return new Promise((resolve, reject) => {
     stylus.render(source, { filename: 'whatever.css' }, (err, css) => {
@@ -37,7 +42,11 @@ async function lintStyle (cssText, node) {
   weexStyler.parse(cssText, (err, data) => {
     err && console.log(err)
     if (Array.isArray(data.log)) {
-      results.push(...data.log)
+      data.log.forEach(log => {
+        if (!ignoreStyleMessage.some(re => re.test(log.reason))) {
+          results.push(log)
+        }
+      })
     }
     for (const selector in data.jsonStyle) {
       // TODO: validate selector

@@ -1,17 +1,18 @@
 const _ = require('lodash')
 
-const ignoreStyleMessage = [
-  /^NOTE\: unit \`px\` is not supported/,
-  /^NOTE\: property value \`\#\w{3}\`/
-]
-
 function printSyntaxLint (syntax) {
+  let errorCount = {
+    template: 0,
+    style: 0,
+    script: 0
+  }
   if (syntax.template) {
     const { location , messages } = syntax.template
     if (messages.length) {
       console.log(`\n    <template> (start at line ${location.line})`)
     }
     messages.forEach(message => {
+      errorCount.template++
       console.log(`    ${message}`)
     })
   }
@@ -23,11 +24,10 @@ function printSyntaxLint (syntax) {
         console.log(`\n    <style> (start at line ${location.line})`)
       }
       messages.forEach(message => {
-        if (!ignoreStyleMessage.some(re => re.test(message.reason))) {
-          const line = location.line + message.line - 1
-          const column = location.column + message.column - 1
-          console.log(`    ${line}:${column} ${message.reason}`)
-        }
+        const line = location.line + message.line - 1
+        const column = location.column + message.column - 1
+        errorCount.style++
+        console.log(`    ${line}:${column} ${message.reason}`)
       })
     })
   }
@@ -42,6 +42,7 @@ function printSyntaxLint (syntax) {
         // console.log(`    ${record.line}:${record.column} ${record.message}`)
         if (!Array.isArray(result.messages)) return;
         result.messages.forEach(record => {
+          errorCount.script++
           const line = location.line + record.line - 1
           const column = location.column + record.column - 1
           console.log(`    ${line}:${column} ${record.message}`)
@@ -50,7 +51,18 @@ function printSyntaxLint (syntax) {
     })
   }
 
-  console.log(`\n\n`)
+  if (errorCount.template + errorCount.style + errorCount.script) {
+    let str = ' => [Test Failed]  '
+    for (const type in errorCount) {
+      if (errorCount[type] > 0) {
+        str += `<${type}>: ${errorCount[type]}  `
+      }
+    }
+    console.log(`\n${str}\n`)
+  } else {
+    console.log(' => All the syntax lints are passed!\n')
+  }
+  // console.log(`\n\n`)
 }
 
 module.exports = printSyntaxLint
