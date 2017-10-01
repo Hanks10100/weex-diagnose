@@ -1,20 +1,16 @@
-const cheerio = require('cheerio')
+const parse5 = require('parse5')
 const lintScript = require('./script')
 const lintStyle = require('./style')
 const lintTemplate = require('./template')
-const parse5 = require('parse5')
 
 function linter (code, options) {
-  // console.log(code)
-  const $ = cheerio.load(code)
-  const template = {}
-
   const doc = parse5.parseFragment(code, {
     treeAdapter: parse5.treeAdapters.default,
     locationInfo: true
   })
   const style = []
   const script = []
+  const template = {}
   doc.childNodes.forEach(node => {
     let start = end = line = column = 0
     if (node.__location) {
@@ -49,10 +45,9 @@ function linter (code, options) {
 
     if (node.nodeName === 'template') {
       template.location = { line, column, start, end }
-      template.messages = lintTemplate($('template').html(), node)
+      template.messages = lintTemplate(content, node)
     }
   })
-
   return { style, script, template }
 }
 

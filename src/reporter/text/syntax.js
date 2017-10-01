@@ -6,14 +6,6 @@ const ignoreStyleMessage = [
 ]
 
 function printSyntaxLint (syntax) {
-  // if (syntax.template && syntax.template.length) {
-  //   const warns = syntax.template
-  //   console.log(`\n    <template>`)
-  //   warns.forEach(message => {
-  //     console.log(`    ${message}`)
-  //   })
-  // }
-
   if (syntax.template) {
     const { location , messages } = syntax.template
     if (messages.length) {
@@ -25,9 +17,11 @@ function printSyntaxLint (syntax) {
   }
 
   if (syntax.style) {
-    console.log(`\n    <style>`)
     // console.log(syntax.style)
     _.flatten(syntax.style).forEach(({ location, messages }) => {
+      if (messages.length) {
+        console.log(`\n    <style> (start at line ${location.line})`)
+      }
       messages.forEach(message => {
         if (!ignoreStyleMessage.some(re => re.test(message.reason))) {
           const line = location.line + message.line - 1
@@ -40,10 +34,10 @@ function printSyntaxLint (syntax) {
 
   if (syntax.script) {
     const script = _.flatten(syntax.script)
-    if (script.length && script[0].messages.length) {
-      console.log(`\n    <script>`)
-    }
     script.forEach(({ location, messages }) => {
+      if (messages[0] && messages[0].messages.length) {
+        console.log(`\n    <script> (start at line ${location.line})`)
+      }
       _.flatten(messages).forEach(result => {
         // console.log(`    ${record.line}:${record.column} ${record.message}`)
         if (!Array.isArray(result.messages)) return;
@@ -55,6 +49,8 @@ function printSyntaxLint (syntax) {
       })
     })
   }
+
+  console.log(`\n\n`)
 }
 
 module.exports = printSyntaxLint
