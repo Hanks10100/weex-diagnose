@@ -5,7 +5,7 @@ const ignoerTemplateMessage = [
   /^tag \<img\> has no matching end tag/
 ]
 
-function lintTemplate (tpl) {
+function lintTemplate (tpl, node) {
   const warns = []
   const { ast, render } = templateCompiler.compile(tpl, {
     warn (message) {

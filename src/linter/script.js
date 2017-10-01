@@ -1,11 +1,8 @@
 const CLIEngine = require('eslint').CLIEngine
 const eslintConfigs = require('../compiler/configs/eslintrc.js')
 
-function lintScript ($script, options) {
+function lintScript (jscode, node) {
   const cli = new CLIEngine(eslintConfigs)
-  // console.log($script)
-  const attrs = $script.attribs
-  const jscode = $script.children[0].data
   // console.log(attrs)
   // console.log(jscode)
   const { results } = cli.executeOnText(jscode)
