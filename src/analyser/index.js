@@ -13,6 +13,7 @@ class Analyser {
       },
       lifecycle: [],
       eslint: [],
+      syntax: {},
       history: {},
       summary: {},
       logs: {},
@@ -46,6 +47,12 @@ class Analyser {
           // console.log(this._raw.eslint)
         }
       } break
+
+      // case 'syntax': {
+      //   for (const key in record) {
+      //     this._raw.syntax[key] = Object.assign(this._raw.syntax[key] || {}, record[key])
+      //   }
+      // } break
 
       default: {
         if (_.isPlainObject(record)) {
@@ -93,6 +100,7 @@ class Analyser {
       errors: this.errors,
       history: history.records,
       messages: this.messages,
+      syntax: _.cloneDeep(_raw.syntax),
       summary: Object.assign({
         bundleSize: _raw.bundleSize
       }, vdom.summary, history.summary),

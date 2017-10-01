@@ -6,10 +6,11 @@ const lintTemplate = require('./template')
 function linter (code, options) {
   // console.log(code)
   const $ = cheerio.load(code)
-  Array.from($('style')).forEach($style => lintStyle($style))
-  Array.from($('script')).forEach($script => lintScript($script))
-  lintTemplate($('template').html())
-  console.log(`\n`)
+  const style = Array.from($('style')).map($style => lintStyle($style, options))
+  const script = Array.from($('script')).map($script => lintScript($script, options))
+  const template = lintTemplate($('template').html(), options)
+
+  return { style, script, template }
 }
 
 module.exports = linter

@@ -15,12 +15,7 @@ function lintTemplate (tpl) {
     }
   })
 
-  if (warns.length) {
-    console.log(`\n    <template>`)
-    warns.forEach(message => {
-      console.log(`    ${message}`)
-    })
-  }
+  return warns
 }
 
 module.exports = lintTemplate

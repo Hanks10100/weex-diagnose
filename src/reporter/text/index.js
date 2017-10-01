@@ -1,6 +1,7 @@
 const printLogs = require('./logs')
 const printHistory = require('./history')
 const printSummary = require('./summary')
+const printSyntaxLint = require('./syntax')
 const { printWarnings, printErrors } = require('./warnings')
 const { writeFile } = require('../../utils')
 
@@ -23,12 +24,14 @@ module.exports = function textReporter (report, options = {}) {
     return report
   }
   // generateVanillaCode(report.history)
-  if (!options.isZebra) {
+  if (options.isZebra) {
+    printSyntaxLint(report.syntax)
+    printWarnings(report.warnings)
+    printErrors(report.errors)
+  } else {
     // printHistory(report.history)
     // printLogs(report.messages)
     printSummary(report.summary)
   }
-  printWarnings(report.warnings)
-  printErrors(report.errors)
   return report
 }
