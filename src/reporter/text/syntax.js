@@ -1,5 +1,7 @@
 const _ = require('lodash')
 
+const skipWarnRE = /^NOTE\:\s+/
+
 function printSyntaxLint (syntax) {
   let errorCount = {
     template: 0,
@@ -26,7 +28,9 @@ function printSyntaxLint (syntax) {
       messages.forEach(message => {
         const line = location.line + message.line - 1
         const column = location.column + message.column - 1
-        errorCount.style++
+        if (!skipWarnRE.test(message.reason)) {
+          errorCount.style++
+        }
         console.log(`    ${line}:${column} ${message.reason}`)
       })
     })
