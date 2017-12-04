@@ -24,14 +24,11 @@ module.exports = function textReporter (report, options = {}) {
     return report
   }
   // generateVanillaCode(report.history)
-  if (options.isZebra) {
-    printSyntaxLint(report.syntax)
-  } else {
-    // printHistory(report.history)
-    // printLogs(report.messages)
-    printSummary(report.summary)
-    printWarnings(report.warnings)
-    printErrors(report.errors)
-  }
+  printSyntaxLint(report.syntax)
+  // printHistory(report.history)
+  // printLogs(report.messages)
+  // printSummary(report.summary)
+  printWarnings(report.warnings)
+  printErrors(report.errors)
   return report
 }

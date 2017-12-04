@@ -29,6 +29,7 @@ async function diagnose (tasks, sharedOptions = {}) {
     }
     reports.push(results)
   }
+  report(reports, options)
   return reports
 }
 
@@ -43,13 +44,14 @@ async function runTask (options = {}) {
 
   if (!options.code) {
     const text = await getContent(options.src, options)
+    analyser.takeRecord('syntax', await linter(text, options))
     options.code = await compiler(text, analyser, options)
   }
 
   const result = await runner(options.code, analyser, options)
 
   analyser.takeRecord('runner', result)
-  return report(analyser.getResult(), options)
+  return analyser.getResult()
 }
 
 function standardizeOptions (task, sharedOptions = {}) {
