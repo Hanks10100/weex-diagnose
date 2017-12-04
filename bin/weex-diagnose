@@ -7,8 +7,7 @@ program
   .version(require('../package').version)
   .usage('[options] <path>')
   .option('-s, --silent', 'Donot print the results in console.')
-  .option('-z, --zebra', 'Diagnose zebra moudle.')
-  .option('-d, --directory', 'Diagnose the whole directory.')
+  .option('-z, --zebra', 'Diagnose zebra module.')
   .option('-o, --output <dest>', 'Write the results into a json file.')
   .parse(process.argv)
 
@@ -24,6 +23,5 @@ function run (filePath, options) {
 run(program.args[program.args.length - 1], {
   silent: program.silent,
   isZebra: program.zebra,
-  isDirectory: program.directory,
   output: program.output
 })

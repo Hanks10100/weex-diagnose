@@ -14,8 +14,25 @@ const defaultOptions = {
   packages: {}
 }
 
-async function executeOnce (task, options = {}) {
-  // console.log(` => run task ${options.src}`)
+// entry
+async function diagnose (tasks, sharedOptions = {}) {
+  const options = standardizeOptions(tasks, sharedOptions)
+  const reports = []
+  for (let i = 0; i < options.length; ++i) {
+    const results = []
+    console.log(` => [diagnose] ${options[i].src}`)
+    for (let iter = 1; iter <= options[i].iteration; ++iter) {
+      // if (options[i].iteration > 1) {
+      //   console.log(`    iteration ${iter}`)
+      // }
+      results.push(await runTask(options[i]))
+    }
+    reports.push(results)
+  }
+  return reports
+}
+
+async function runTask (options = {}) {
   const analyser = new Analyser(options)
 
   if (options.isZebra) {
@@ -35,53 +52,23 @@ async function executeOnce (task, options = {}) {
   return report(analyser.getResult(), options)
 }
 
-// run single task
-async function runTask (task, sharedOptions) {
-  const options = Object.assign({}, defaultOptions, sharedOptions)
-  if (_.isString(task)) {
-    options.src = task
+function standardizeOptions (task, sharedOptions = {}) {
+  if (!task) return
+  if (Array.isArray(task)) {
+    return _.flatten(task.map(t => standardizeOptions(t, sharedOptions)))
   }
-  if (_.isPlainObject(task)) {
-    Object.assign(options, task)
-  }
-  if (!options.src && !options.code) {
-    // console.log(' => invalid task')
+  const entryPath = _.isString(task) ? task : (_.isPlainObject(task) ? (task.src || sharedOptions.src) : '')
+  if (!entryPath) {
     return null
   }
-
-  const results = []
-  console.log(` => [diagnose] ${options.src}`)
-  // if (Object.keys(options.packages || {}).length) {
-  //   console.log(`              packages: ${JSON.stringify(options.packages)}`)
-  // }
-  for (let i = 1; i <= options.iteration; ++i) {
-    // if (options.iteration > 1) {
-    //   console.log(`    iteration ${i}`)
-    // }
-    results.push(await executeOnce(task, options))
-  }
-  return results
-}
-
-// entry
-async function diagnose (tasks, sharedOptions = {}) {
-  if (!tasks) return
-  if (Array.isArray(tasks)) {
-    const reports = []
-    for (let i = 0; i < tasks.length; ++i) {
-      reports.push(await runTask(tasks[i], sharedOptions))
+  return walk(entryPath).map(filePath => {
+    const options = Object.assign({}, defaultOptions, sharedOptions)
+    if (_.isPlainObject(task)) {
+      Object.assign(options, task)
     }
-    return reports
-  }
-  if (sharedOptions.isDirectory) {
-    const files = walk(_.isString(tasks) ? tasks : tasks.src)
-    const reports = []
-    for (let i = 0; i < files.length; ++i) {
-      reports.push(await runTask(files[i], sharedOptions))
-    }
-    return reports
-  }
-  return await runTask(tasks, sharedOptions)
+    options.src = filePath
+    return options
+  })
 }
 
 module.exports = diagnose
