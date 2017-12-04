@@ -1,5 +1,8 @@
 module.exports = {
   envs: ["node", "mocha", "es6"],
+  parserOptions: {
+    sourceType: "module",
+  },
   useEslintrc: false,
   root: true,
   // "globals": {

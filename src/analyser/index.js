@@ -2,6 +2,7 @@ const _ = require('lodash')
 const analyseVdom = require('./vdom')
 const analyseLogs = require('./logs')
 const analyseHistory = require('./history')
+const analyseSyntax = require('./syntax')
 const analyseException = require('./exception')
 
 class Analyser {
@@ -80,10 +81,12 @@ class Analyser {
     this.history = analyseHistory(this._raw.history)
     this.exception = analyseException(this._raw.exception)
 
-    const [warnings, errors] = _.partition(this._raw.eslint, { severity: 1 })
-    this.warnings.push(...warnings)
-    this.errors.push(...errors)
-    // console.log(warnings)
+    const res = analyseSyntax(this._raw.syntax)
+    const eslint = _.partition(this._raw.eslint, { severity: 1 })
+    if (eslint) {
+      this.warnings.push(...eslint[0])
+      this.errors.push(...eslint[1])
+    }
 
     const logs = analyseLogs(this._raw.logs)
     this.warnings.push(...logs.warnings)

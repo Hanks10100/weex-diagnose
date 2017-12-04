@@ -1,4 +1,3 @@
-const cheerio = require('cheerio')
 const templateCompiler = require('weex-template-compiler')
 
 const ignoerTemplateMessage = [

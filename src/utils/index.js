@@ -64,7 +64,10 @@ function isVueBundle (text) {
 }
 
 function isVueFile (text) {
-  return false
+  const styleRE = /<\s*style\s*\w*>([^]*)<\/\s*style\s*>/
+  const scriptRE = /<\s*script.*>([^]*)<\/\s*script\s*>/
+  const templateRE = /<\s*template\s*>([^]*)<\/\s*template\s*>/
+  return templateRE.test(text)
 }
 
 function accumulate (object, key, step = 1) {
