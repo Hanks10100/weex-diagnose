@@ -4,6 +4,7 @@ const analyseLogs = require('./logs')
 const analyseHistory = require('./history')
 const analyseSyntax = require('./syntax')
 const analyseException = require('./exception')
+const { mergeResult } = require('../utils')
 
 class Analyser {
   constructor (options = {}) {
@@ -20,6 +21,7 @@ class Analyser {
       logs: {},
       vdom: {}
     }
+    this.tips = []
     this.warnings = []
     this.errors = []
   }
@@ -49,12 +51,6 @@ class Analyser {
         }
       } break
 
-      // case 'syntax': {
-      //   for (const key in record) {
-      //     this._raw.syntax[key] = Object.assign(this._raw.syntax[key] || {}, record[key])
-      //   }
-      // } break
-
       default: {
         if (_.isPlainObject(record)) {
           this._raw[type] = this._raw[type] || {}
@@ -82,6 +78,11 @@ class Analyser {
     this.exception = analyseException(this._raw.exception)
 
     const res = analyseSyntax(this._raw.syntax)
+    if (res) {
+      this.tips.push(...res.tips)
+      this.warnings.push(...res.warnings)
+      this.errors.push(...res.errors)
+    }
     const eslint = _.partition(this._raw.eslint, { severity: 1 })
     if (eslint) {
       this.warnings.push(...eslint[0])
@@ -89,9 +90,14 @@ class Analyser {
     }
 
     const logs = analyseLogs(this._raw.logs)
+    // this.tips.push(...logs.tips)
     this.warnings.push(...logs.warnings)
     this.errors.push(...logs.errors)
     this.messages = logs.messages
+
+    // console.log(this.tips)
+    // console.log(this.warnings)
+    // console.log(this.errors)
   }
 
   getResult () {

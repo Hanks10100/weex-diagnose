@@ -40,7 +40,7 @@ async function compile (text, analyser, options) {
     return res.code
   }
 
-  eslint(text, analyser)
+  // eslint(text, analyser)
   return injectGlobalTask(text)
 }
 

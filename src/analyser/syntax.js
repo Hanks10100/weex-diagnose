@@ -1,51 +1,87 @@
 const _ = require('lodash')
-const { accumulate, sizeof } = require('../utils')
+const { accumulate, mergeResult, sizeof } = require('../utils')
 
-const skipWarnRE = /^NOTE\:\s+/
-
-function parseTemplate (template, summary = {}) {
+function parseTemplate (template) {
   const { location , messages } = template
+  const summary = {
+    tips: [],
+    warnings: [],
+    errors: []
+  }
   if (messages.length) {
     console.log(`\n    <template> (start at line ${location.line})`)
   }
   messages.forEach(message => {
-    summary.template++
+    // TODO: collect template messages
     console.log(`    ${message}`)
   })
+  return summary
 }
 
-function parseStyle (styles = [], summary = {}) {
+const styleMessageRE = /^(error|note|warning)\s*\:\s+/i
+function parseStyle (styles = []) {
+  const summary = {
+    tips: [],
+    warnings: [],
+    errors: []
+  }
   _.flatten(styles).forEach(({ location, messages }) => {
-    if (messages.length) {
-      console.log(`\n    <style> (start at line ${location.line})`)
-    }
+    // if (messages.length) {
+    //   console.log(`\n    <style> (start at line ${location.line})`)
+    // }
     messages.forEach(message => {
-      const line = location.line + message.line - 1
-      const column = location.column + message.column - 1
-      if (!skipWarnRE.test(message.reason)) {
-        summary.style++
+      const result = { type: 'style' }
+      result.ruleId = message.reason
+      result.line = location.line + message.line - 1
+      result.column = location.column + message.column - 1
+      result.message = message.reason
+      result.source = message.source
+      // console.log(`    ${result.line}:${result.column} ${message.reason}`)
+      let array = summary.tips
+      const match = styleMessageRE.exec(message.reason)
+      if (match) {
+        switch (match[1].toLocaleLowerCase()) {
+          case 'note': array = summary.tips; break
+          case 'warning':
+          case 'error': array = summary.warnings; break
+        }
       }
-      console.log(`    ${line}:${column} ${message.reason}`)
+      array.push(result)
     })
   })
+  return summary
 }
 
-function parseScript (scripts = [], summary = {}) {
+function parseScript (scripts = []) {
+  const summary = {
+    tips: [],
+    warnings: [],
+    errors: []
+  }
   _.flatten(scripts).forEach(({ location, messages }) => {
-    if (messages[0] && messages[0].messages.length) {
-      console.log(`\n    <script> (start at line ${location.line})`)
-    }
+    // if (messages[0] && messages[0].messages.length) {
+    //   console.log(`\n    <script> (start at line ${location.line})`)
+    // }
     _.flatten(messages).forEach(result => {
       // console.log(`    ${record.line}:${record.column} ${record.message}`)
       if (!Array.isArray(result.messages)) return;
       result.messages.forEach(record => {
-        summary.script++
-        const line = location.line + record.line - 1
-        const column = location.column + record.column - 1
-        console.log(`    ${line}:${column} ${record.message}`)
+        const formatted = { type: 'eslint' }
+        formatted.ruleId = record.ruleId
+        formatted.line = location.line + record.line - 1
+        formatted.column = location.column + record.column - 1
+        formatted.message = record.message
+        formatted.source = record.source
+        switch (record.severity) {
+          case 0: summary.tips.push(formatted); break
+          case 1: summary.warnings.push(formatted); break
+          case 2: summary.errors.push(formatted); break
+        }
+        // console.log(`    ${formatted.line}:${formatted.column} ${record.message}`)
       })
     })
   })
+  return summary
 }
 
 function analyseSyntax (syntax = {}) {
@@ -55,16 +91,22 @@ function analyseSyntax (syntax = {}) {
     style: 0,
     script: 0
   }
+  const results = {
+    tips: [],
+    warnings: [],
+    errors: []
+  }
   if (syntax.template && syntax.template.messages) {
-    parseTemplate(syntax.template, errorCount)
+    mergeResult(results, parseTemplate(syntax.template))
   }
   if (syntax.style && syntax.style.length) {
-    parseStyle(syntax.style, errorCount)
+    mergeResult(results, parseStyle(syntax.style))
   }
   if (syntax.script && syntax.script.length) {
-    parseScript(syntax.script, errorCount)
+    mergeResult(results, parseScript(syntax.script))
   }
-  return syntax
+  // console.log(results)
+  return results
 }
 
 module.exports = analyseSyntax

@@ -97,6 +97,19 @@ function forEachNode ($root, fn, options = {}) {
   }
 }
 
+function mergeResult (summary, object) {
+  for (const key in summary) {
+    if (Array.isArray(object[key])) {
+      summary[key].push(...object[key])
+      summary[key].sort((a, b) => {
+        return (a.line !== b.line)
+          ? a.line - b.line
+          : a.column - b.column
+      })
+    }
+  }
+}
+
 function objectToArray (object) {
   const array = []
   for (const key in object) {
@@ -118,6 +131,7 @@ module.exports = Object.assign({
   accumulate,
   deepClone,
   forEachNode,
+  mergeResult,
   objectToArray,
   getJSBundleType,
   isVueBundle,

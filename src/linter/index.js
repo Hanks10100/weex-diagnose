@@ -9,7 +9,7 @@ async function linter (code, options) {
   const script = []
   const template = {}
   if (isVueFile(code)) {
-    console.log(' => isVue', options.src)
+    // console.log(' => isVue', options.src)
     const doc = parse5.parseFragment(code, {
       treeAdapter: parse5.treeAdapters.default,
       locationInfo: true

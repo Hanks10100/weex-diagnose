@@ -5,15 +5,16 @@ const ignoerTemplateMessage = [
 ]
 
 function lintTemplate (tpl, node) {
+  // console.log(` => lint template`, tpl)
   const warns = []
-  const { ast, render } = templateCompiler.compile(tpl, {
+  const compiled = templateCompiler.compile(tpl, {
     warn (message) {
       if (!ignoerTemplateMessage.some(re => re.test(message))) {
         warns.push(message)
       }
     }
   })
-
+  // console.log(compiled)
   return warns
 }
 
