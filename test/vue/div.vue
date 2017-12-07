@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="stylus" scoped>
   .box {
     border-width: 2px;
     border-style: solid;

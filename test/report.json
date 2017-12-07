@@ -1,0 +1,156 @@
+[
+  [
+    {
+      "info": {
+        "src": "test/vue/bundle.js",
+        "iteration": 1,
+        "packages": {},
+        "output": "report.json"
+      },
+      "tips": [],
+      "warnings": [
+        {
+          "type": "eslint",
+          "ruleId": "eqeqeq",
+          "line": 173,
+          "column": 25,
+          "message": "Expected '===' and instead saw '=='.",
+          "source": "          if (global.xyz == 23) {"
+        },
+        {
+          "type": "eslint",
+          "ruleId": "no-console",
+          "line": 174,
+          "column": 12,
+          "message": "Unexpected console statement.",
+          "source": "            console.log('tttt')"
+        }
+      ],
+      "errors": [
+        {
+          "type": "eslint",
+          "ruleId": "no-restricted-globals",
+          "line": 173,
+          "column": 14,
+          "message": "Unexpected use of 'global'.",
+          "source": "          if (global.xyz == 23) {"
+        }
+      ],
+      "summary": {
+        "bundleSize": 5321,
+        "totalCount": 19,
+        "totalDepth": 4,
+        "messageSize": 3029,
+        "timecost": 2865.3960037231445
+      }
+    }
+  ],
+  [
+    {
+      "info": {
+        "src": "test/vue/div.vue",
+        "iteration": 1,
+        "packages": {},
+        "output": "report.json"
+      },
+      "tips": [
+        {
+          "type": "style",
+          "ruleId": "NOTE: this file is using stylus, the line number in <style> will be mismatch.",
+          "line": 7,
+          "column": 0,
+          "message": "NOTE: this file is using stylus, the line number in <style> will be mismatch.",
+          "source": "<style lang=\"stylus\" scoped>"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "summary": {
+        "bundleSize": 4986,
+        "totalCount": 1,
+        "totalDepth": 1,
+        "messageSize": 0,
+        "timecost": 0
+      }
+    }
+  ],
+  [
+    {
+      "info": {
+        "src": "test/vue/no-scoped.vue",
+        "iteration": 1,
+        "packages": {},
+        "output": "report.json"
+      },
+      "tips": [
+        {
+          "type": "style",
+          "ruleId": "NOTE: property value `column` is the DEFAULT value for `flex-direction` (could be removed)",
+          "line": 39,
+          "column": 5,
+          "message": "NOTE: property value `column` is the DEFAULT value for `flex-direction` (could be removed)",
+          "source": "    flex-direction: column;"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "eslint",
+          "ruleId": "eqeqeq",
+          "line": 17,
+          "column": 20,
+          "message": "Expected '===' and instead saw '=='.",
+          "source": "      if (global.x == 54) {"
+        },
+        {
+          "type": "eslint",
+          "ruleId": "no-console",
+          "line": 18,
+          "column": 9,
+          "message": "Unexpected console statement.",
+          "source": "        console.log('bb')"
+        },
+        {
+          "type": "style",
+          "ruleId": "ERROR: <style> must be scoped!",
+          "line": 31,
+          "column": 8,
+          "message": "ERROR: <style> must be scoped!",
+          "source": "<style>"
+        },
+        {
+          "type": "style",
+          "ruleId": "WARNING: `order` is not a standard property name (may not be supported)",
+          "line": 36,
+          "column": 5,
+          "message": "WARNING: `order` is not a standard property name (may not be supported)",
+          "source": "    order: abc;"
+        },
+        {
+          "type": "style",
+          "ruleId": "WARNING: `display` is not a standard property name (may not be supported)",
+          "line": 42,
+          "column": 5,
+          "message": "WARNING: `display` is not a standard property name (may not be supported)",
+          "source": "    display: inline;"
+        }
+      ],
+      "errors": [
+        {
+          "type": "eslint",
+          "ruleId": "no-restricted-globals",
+          "line": 17,
+          "column": 11,
+          "message": "Unexpected use of 'global'.",
+          "source": "      if (global.x == 54) {"
+        }
+      ],
+      "summary": {
+        "bundleSize": 6570,
+        "totalCount": 1,
+        "totalDepth": 1,
+        "messageSize": 0,
+        "timecost": 0
+      }
+    }
+  ]
+]

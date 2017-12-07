@@ -26,7 +26,9 @@ weex-diagnose -s path/to/source/ -o report.json
 ### info
 
 + `src`: 原文件的路径。
-+ `options`: 校验时的配置项，默认为空。
++ `iteration`: 每个文件的迭代次数，默认是 1。
++ `packages`: 指定依赖的版本，默认为空。
++ `output`: 输出文件的路径。
 
 ### tips & warnings & errors
 
@@ -40,3 +42,13 @@ tips & warnings & errors 中的格式是相同的。
 | `line` | Number | 出错位置的行号 | - |
 | `column` | Number | 出错位置的列号 | - |
 | `source` | String | 出错的代码片段 | 不一定全都有 |
+
+### summary
+
+这些信息只在页面能够在 node 环境下执行时才会有效，否则并无实际意义。
+
++ `bundleSize`: 页面代码体积。
++ `totalCount`: 页面总的节点数。
++ `totalDepth`: 页面节点的最大深度。
++ `messageSize`: js-native 之间的通信数据量。
++ `timecost`: virtual-dom 构建消耗的时间。

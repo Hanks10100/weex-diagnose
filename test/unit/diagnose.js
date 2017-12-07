@@ -10,7 +10,7 @@ const compare = require('../../src/reporter/compare')
 //   compare(reports)
 // })
 
-diagnose(path.resolve(__dirname, '../vue/div.vue'))
+diagnose(path.resolve(__dirname, '../vue/'))
 // .then(report => {
 //   // console.log(report)
 //   compare([report])

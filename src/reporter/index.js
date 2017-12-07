@@ -31,8 +31,14 @@ function report (reports = [], options = []) {
 function filterReport (reports = [], options = {}) {
   reports.forEach(result => {
     delete result.history
+    delete result.syntax
     delete result.messages
     delete result.vdom
+    if (result.summary) {
+      delete result.summary.layers
+      delete result.summary.cssProps
+      delete result.summary.callCount
+    }
   })
   return reports
 }

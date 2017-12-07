@@ -6,13 +6,11 @@ const analyseSyntax = require('./syntax')
 const analyseException = require('./exception')
 const { mergeResult } = require('../utils')
 
+
 class Analyser {
   constructor (options = {}) {
     this._raw = {
-      info: {
-        src: options.src,
-        packages: Object.assign({}, options.packages)
-      },
+      info: filterOptions(options),
       lifecycle: [],
       eslint: [],
       syntax: {},
@@ -105,6 +103,7 @@ class Analyser {
     const { logs, vdom, history, exception, _raw } = this
     return {
       info: this.info,
+      tips: this.tips,
       warnings: this.warnings,
       errors: this.errors,
       history: history.records,
@@ -116,6 +115,16 @@ class Analyser {
       vdom: vdom
     }
   }
+}
+
+function filterOptions (options) {
+  const info = {}
+  for (const key in options) {
+    if (key !== 'code') {
+      info[key] = options[key]
+    }
+  }
+  return info
 }
 
 module.exports = Analyser

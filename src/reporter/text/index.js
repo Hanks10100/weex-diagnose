@@ -2,7 +2,7 @@ const printLogs = require('./logs')
 const printHistory = require('./history')
 const printSummary = require('./summary')
 const printSyntaxLint = require('./syntax')
-const { printWarnings, printErrors } = require('./warnings')
+const { printTips, printWarnings, printErrors } = require('./warnings')
 const { writeFile } = require('../../utils')
 
 function generateVanillaCode (history) {
@@ -29,6 +29,7 @@ module.exports = function textReporter (report, options = {}) {
   // printHistory(report.history)
   // printLogs(report.messages)
   // printSummary(report.summary)
+  printTips(report.tips)
   printWarnings(report.warnings)
   printErrors(report.errors)
   return report
