@@ -43,14 +43,24 @@ async function runTask (options = {}) {
   }
 
   if (!options.code) {
-    const text = await getContent(options.src, options)
-    analyser.takeRecord('syntax', await linter(text, options))
-    options.code = await compiler(text, analyser, options)
+    try {
+      const text = await getContent(options.src, options)
+      analyser.takeRecord('syntax', await linter(text, options))
+      options.code = await compiler(text, analyser, options)
+    } catch (err) {
+      console.log(`Faild to compile!`)
+      console.log(err)
+    }
   }
 
-  const result = await runner(options.code, analyser, options)
+  try {
+    const result = await runner(options.code, analyser, options)
+    analyser.takeRecord('runner', result)
+  } catch (err) {
+    console.log(`Faild to run the code!`)
+    console.log(err)
+  }
 
-  analyser.takeRecord('runner', result)
   return analyser.getResult()
 }
 

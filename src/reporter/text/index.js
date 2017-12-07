@@ -20,10 +20,10 @@ function generateVanillaCode (history) {
 }
 
 module.exports = function textReporter (report, options = {}) {
-  console.log(`\n\n\n => text report`, options.src)
   if (options.silent) {
     return report
   }
+  console.log(`\n => text report`, options.src)
   // generateVanillaCode(report.history)
   // printSyntaxLint(report.syntax)
   // printHistory(report.history)
