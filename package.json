@@ -1,6 +1,6 @@
 {
   "name": "weex-diagnose",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Diagnose .vue files and js bundle within Weex context",
   "main": "index.js",
   "scripts": {
