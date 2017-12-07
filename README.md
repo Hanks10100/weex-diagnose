@@ -12,12 +12,11 @@ The `path` can be local path or remote url. Moreover, it can parse the url rules
 
 ### Options
 
-+ `-V`: `--version` output the version number.
-+ `-s`: `--silent` Donot print the results in console.
-+ `-z`: `--zebra` Diagnose zebra moudle.
-+ `-d`: `--directory` Diagnose the whole directory.
++ `-V`: `--version` Output the version number.
++ `-s`: `--silent` Don't print the results in console.
++ `-z`: `--zebra` Diagnose zebra module.
 + `-o`: `--output <dest>` Write the results into a json file.
-+ `-h`: `--help` output usage information.
++ `-h`: `--help` Output usage information.
 
 ## Example
 
