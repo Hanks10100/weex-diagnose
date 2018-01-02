@@ -18,13 +18,24 @@ async function compileStylus (source) {
   })
 }
 
+function nodeToString (node) {
+  let attrs = node.attrs.map(x => {
+    return x.value ? `${x.name}="${x.value}"` : x.name
+  }).join(' ')
+  if (attrs.length > 0) {
+    attrs = ' ' + attrs
+  }
+  return `<${node.tagName}${attrs}>`
+}
+
 async function lintStyle (cssText, node) {
   const results = []
   if (node && node.attrs) {
     if (!node.attrs.some(({ name }) => name === 'scoped')) {
       results.push({
         column: 8, line: 1,
-        reason: 'ERROR: <style> must be scoped!'
+        reason: 'ERROR: <style> must be scoped!',
+        source: nodeToString(node)
       })
     }
     for (let i = 0; i < node.attrs.length; ++i) {
@@ -32,7 +43,8 @@ async function lintStyle (cssText, node) {
       if (name === 'lang' && value === 'stylus') {
         results.push({
           column: 0, line: 1,
-          reason: 'NOTE: this file is using stylus, the line number in <style> will be mismatch.'
+          reason: 'NOTE: this file is using stylus, the line number in <style> will be mismatch.',
+          source: nodeToString(node)
         })
         cssText = await compileStylus(cssText)
         // console.log(cssText)
@@ -44,6 +56,9 @@ async function lintStyle (cssText, node) {
     if (Array.isArray(data.log)) {
       data.log.forEach(log => {
         if (!ignoreStyleMessage.some(re => re.test(log.reason))) {
+          try {
+            log.source = (cssText.split(/\n|\t/)[log.line - 1]).slice(0, 60)
+          } catch (e) {}
           results.push(log)
         }
       })

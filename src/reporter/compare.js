@@ -22,11 +22,11 @@ function toReadable (object, i) {
 function compareReports (reportGroup = []) {
   let compareTable = []
   reportGroup.forEach(reports => {
-    const { results, averange, info } = parseResult(reports)
-    compareTable.push(averange)
+    const { results, average, info } = parseResult(reports)
+    compareTable.push(average)
     const table = Array.from(results)
     if (reports.length > 1) {
-      table.push(toReadable(averange))
+      table.push(toReadable(average))
     }
 
     // console.log(`\nsrc: ${info.src}`)
@@ -73,12 +73,12 @@ function parseResult (reports = []) {
     })
 
     const N = reports.length
-    const averange = {}
+    const average = {}
     for (const key in summary) {
-      averange[key] = summary[key] / N
+      average[key] = summary[key] / N
     }
 
-    return { results, averange, info }
+    return { results, average, info }
 
     // const table = [supportedProps.map(n => propsLabel[n].label)]
     //   .concat(reports.map(report => {

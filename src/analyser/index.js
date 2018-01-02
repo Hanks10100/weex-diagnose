@@ -2,15 +2,15 @@ const _ = require('lodash')
 const analyseVdom = require('./vdom')
 const analyseLogs = require('./logs')
 const analyseHistory = require('./history')
+const analyseSyntax = require('./syntax')
 const analyseException = require('./exception')
+const { mergeResult } = require('../utils')
+
 
 class Analyser {
   constructor (options = {}) {
     this._raw = {
-      info: {
-        src: options.src,
-        packages: Object.assign({}, options.packages)
-      },
+      info: filterOptions(options),
       lifecycle: [],
       eslint: [],
       syntax: {},
@@ -19,6 +19,7 @@ class Analyser {
       logs: {},
       vdom: {}
     }
+    this.tips = []
     this.warnings = []
     this.errors = []
   }
@@ -48,12 +49,6 @@ class Analyser {
         }
       } break
 
-      // case 'syntax': {
-      //   for (const key in record) {
-      //     this._raw.syntax[key] = Object.assign(this._raw.syntax[key] || {}, record[key])
-      //   }
-      // } break
-
       default: {
         if (_.isPlainObject(record)) {
           this._raw[type] = this._raw[type] || {}
@@ -80,15 +75,27 @@ class Analyser {
     this.history = analyseHistory(this._raw.history)
     this.exception = analyseException(this._raw.exception)
 
-    const [warnings, errors] = _.partition(this._raw.eslint, { severity: 1 })
-    this.warnings.push(...warnings)
-    this.errors.push(...errors)
-    // console.log(warnings)
+    const res = analyseSyntax(this._raw.syntax)
+    if (res) {
+      this.tips.push(...res.tips)
+      this.warnings.push(...res.warnings)
+      this.errors.push(...res.errors)
+    }
+    const eslint = _.partition(this._raw.eslint, { severity: 1 })
+    if (eslint) {
+      this.warnings.push(...eslint[0])
+      this.errors.push(...eslint[1])
+    }
 
     const logs = analyseLogs(this._raw.logs)
+    // this.tips.push(...logs.tips)
     this.warnings.push(...logs.warnings)
     this.errors.push(...logs.errors)
     this.messages = logs.messages
+
+    // console.log(this.tips)
+    // console.log(this.warnings)
+    // console.log(this.errors)
   }
 
   getResult () {
@@ -96,6 +103,7 @@ class Analyser {
     const { logs, vdom, history, exception, _raw } = this
     return {
       info: this.info,
+      tips: this.tips,
       warnings: this.warnings,
       errors: this.errors,
       history: history.records,
@@ -107,6 +115,16 @@ class Analyser {
       vdom: vdom
     }
   }
+}
+
+function filterOptions (options) {
+  const info = {}
+  for (const key in options) {
+    if (key !== 'code') {
+      info[key] = options[key]
+    }
+  }
+  return info
 }
 
 module.exports = Analyser

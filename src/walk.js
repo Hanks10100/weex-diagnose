@@ -13,7 +13,7 @@ function isValidPath (filePath) {
 
 function isValidFile (fileName) {
   return fs.lstatSync(fileName).isFile()
-    && path.extname(fileName) === '.vue'
+    && (path.extname(fileName) === '.vue' || path.extname(fileName) === '.js')
 }
 
 function walk (entryPath) {
@@ -33,9 +33,10 @@ function walk (entryPath) {
           results.push(pathName)
         }
       }
-      return results
     }
+    return results
   }
+  return []
 }
 
 module.exports = walk

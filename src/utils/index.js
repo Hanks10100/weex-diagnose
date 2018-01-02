@@ -64,7 +64,10 @@ function isVueBundle (text) {
 }
 
 function isVueFile (text) {
-  return false
+  const styleRE = /<\s*style\s*\w*>([^]*)<\/\s*style\s*>/
+  const scriptRE = /<\s*script.*>([^]*)<\/\s*script\s*>/
+  const templateRE = /<\s*template\s*>([^]*)<\/\s*template\s*>/
+  return templateRE.test(text)
 }
 
 function accumulate (object, key, step = 1) {
@@ -94,6 +97,19 @@ function forEachNode ($root, fn, options = {}) {
   }
 }
 
+function mergeResult (summary, object) {
+  for (const key in summary) {
+    if (Array.isArray(object[key])) {
+      summary[key].push(...object[key])
+      summary[key].sort((a, b) => {
+        return (a.line !== b.line)
+          ? a.line - b.line
+          : a.column - b.column
+      })
+    }
+  }
+}
+
 function objectToArray (object) {
   const array = []
   for (const key in object) {
@@ -115,6 +131,7 @@ module.exports = Object.assign({
   accumulate,
   deepClone,
   forEachNode,
+  mergeResult,
   objectToArray,
   getJSBundleType,
   isVueBundle,
