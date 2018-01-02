@@ -1,1 +1,2 @@
-console.log('entry file')
+var diagnose = require('./src')
+module.exports = diagnose;
