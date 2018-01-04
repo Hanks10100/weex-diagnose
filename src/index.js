@@ -6,7 +6,9 @@ const runner = require('./runner')
 const Analyser = require('./analyser')
 const report = require('./reporter')
 const walk = require('./walk')
+const intercept = require("intercept-stdout");
 
+let captured_message = [];
 const defaultOptions = {
   src: null,
   code: null,
@@ -25,7 +27,18 @@ async function diagnose (tasks, sharedOptions = {}) {
       // if (options[i].iteration > 1) {
       //   console.log(`    iteration ${iter}`)
       // }
-      results.push(await runTask(options[i]))
+      // captures stdout and/or stderr
+      let unhook_intercept = intercept(function(msgs) {
+        captured_message.push(msgs);
+      });
+      let res = await runTask(options[i]);
+      res['messages'] = captured_message;
+
+      // restore captures task.
+      unhook_intercept();
+      captured_message = [];
+
+      results.push(res)
     }
     reports.push(results)
   }
