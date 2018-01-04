@@ -1,6 +1,6 @@
 {
   "name": "weex-diagnose",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Diagnose .vue files and js bundle within Weex context",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "find-cache-dir": "^1.0.0",
+    "intercept-stdout": "^0.1.2",
     "jsonfile": "^3.0.0",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",

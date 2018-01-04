@@ -32,7 +32,7 @@ function filterReport (reports = [], options = {}) {
   reports.forEach(result => {
     delete result.history
     delete result.syntax
-    delete result.messages
+    // delete result.messages
     delete result.vdom
     if (result.summary) {
       delete result.summary.layers
