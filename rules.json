@@ -1,0 +1,217 @@
+[
+  {
+    "name": "no-alert",
+    "brief_description": "禁用 alert",
+    "detai_description": "禁用 alert"
+  },
+  {
+    "name": "no-debugger",
+    "brief_description": "禁用 debugger",
+    "detai_description": "禁用 debugger"
+  },
+  {
+    "name": "no-labels",
+    "brief_description": "禁用 labels",
+    "detai_description": "禁用 labels"
+  },
+  {
+    "name": "no-new-func",
+    "brief_description": "禁止使用 new Function",
+    "detai_description": "禁止使用 new Function"
+  },
+  {
+    "name": "no-implied-eval",
+    "brief_description": "禁止使用 eval",
+    "detai_description": "禁止使用 eval"
+  },
+  {
+    "name": "no-alert",
+    "brief_description": "禁用 alert",
+    "detai_description": "禁用 alert"
+  },
+  {
+    "name": "eqeqeq",
+    "brief_description": "使用严格比较",
+    "detai_description": "使用严格比较,如必须用 === 或 !=="
+  },
+  {
+    "name": "no-alert",
+    "brief_description": "禁用 alert",
+    "detai_description": "禁用 alert"
+  },
+  {
+    "name": "no-global-assign",
+    "brief_description": "禁止覆盖全局变量",
+    "detai_description": "禁止覆盖全局变量"
+  },
+  {
+    "name": "no-implicit-globals",
+    "brief_description": "不可隐式创建全局变量",
+    "detai_description": "不可隐式创建全局变量"
+  },
+  {
+    "name": "no-restricted-globals",
+    "brief_description": "禁用 window 和 global 变量",
+    "detai_description": "禁用 window 和 global 变量"
+  },
+  {
+    "name": "no-extend-native",
+    "brief_description": "禁止扩展原生对象",
+    "detai_description": "禁止扩展原生对象"
+  },
+  {
+    "name": "no-iterator",
+    "brief_description": "禁用 __iterator__ 属性",
+    "detai_description": "禁用 alert"
+  },
+  {
+    "name": "no-proto",
+    "brief_description": "禁用 __proto__ 属性",
+    "detai_description": "禁用 __proto__ 属性"
+  },
+  {
+    "name": "no-prototype-builtins",
+    "brief_description": "禁用实例调用",
+    "detai_description": "不能通过实例调用 Object.prototype 中的方法"
+  },
+  {
+    "name": "no-new-wrappers",
+    "brief_description": "禁止使用 new 创建内置对象",
+    "detai_description": "禁止使用 new 创建内置对象"
+  },
+  {
+    "name": "use-isnan",
+    "brief_description": "必须使用 isNaN 判断 NaN",
+    "detai_description": "必须使用 isNaN 判断 NaN"
+  },
+  {
+    "name": "no-redeclare",
+    "brief_description": "禁止变量重复声明",
+    "detai_description": "禁止变量重复声明"
+  },
+  {
+    "name": "no-shadow-restricted-names",
+    "brief_description": "禁止使用限制的（保留字）变量名",
+    "detai_description": "禁止使用限制的（保留字）变量名"
+  },
+  {
+    "name": "no-inner-declarations",
+    "brief_description": "禁止在 if 语句中创建函数",
+    "detai_description": "禁止在 if 语句中创建函数"
+  },
+  {
+    "name": "no-loop-func",
+    "brief_description": "禁止在 for 语句中创建函数",
+    "detai_description": "禁止在 for 语句中创建函数"
+  },
+  {
+    "name": "no-unsafe-negation",
+    "brief_description": "限制不稳定的否定判断",
+    "detai_description": "限制不稳定的否定判断"
+  },
+  {
+    "name": "no-cond-assign",
+    "brief_description": "不能在 return 和 if 的判断语句中赋值",
+    "detai_description": "不能在 return 和 if 的判断语句中赋值"
+  },
+  {
+    "name": "no-console",
+    "brief_description": "禁用 console",
+    "detai_description": "禁用 console （console.warn console.error 可用）"
+  },
+  {
+    "name": "no-empty",
+    "brief_description": "不能有空的大括号",
+    "detai_description": "不能有空的大括号"
+  },
+  {
+    "name": "no-unused-vars",
+    "brief_description": "不允许存在没有用到的变量",
+    "detai_description": "不允许存在没有用到的变量"
+  },
+  {
+    "name": "no-sparse-arrays",
+    "brief_description": "数组中不能有额外的逗号",
+    "detai_description": "数组中不能有额外的逗号（结尾可以有逗号）"
+  },
+  {
+    "name": "no-template-curly-in-string",
+    "brief_description": "在普通字符串中不能用模板字符串的语法",
+    "detai_description": "在普通字符串中不能用模板字符串的语法"
+  },
+  {
+    "name": "no-unreachable",
+    "brief_description": "不能有执行不到的代码",
+    "detai_description": "不能有执行不到的代码"
+  },
+  {
+    "name": "no-constant-condition",
+    "brief_description": "不允许存在 if(true) 或者 if(false)",
+    "detai_description": "不允许存在 if(true) 或者 if(false)"
+  },
+  {
+    "name": "no-duplicate-case",
+    "brief_description": "不可以有相同的 case 语句",
+    "detai_description": "不可以有相同的 case 语句"
+  },
+  {
+    "name": "no-self-compare",
+    "brief_description": "禁止自己和自己比较或赋值",
+    "detai_description": "禁止自己和自己比较或赋值"
+  },
+  {
+    "name": "no-extra-bind",
+    "brief_description": "不能有额外的 fn.bind",
+    "detai_description": "不能有额外的 fn.bind"
+  },
+  {
+    "name": "array-callback-return",
+    "brief_description": "数组方法的回调中必须有返回值",
+    "detai_description": "每个 map reduce find every some filter sort 中的回调函数必须有返回值"
+  },
+  {
+    "name": "must-use-scoped",
+    "brief_description": "style标签冲必须包含scoped",
+    "detai_description": "style标签冲必须包含scoped"
+  },
+  {
+    "name": "no-standard-style-value",
+    "brief_description": "不允许使用实验性的样式属性值",
+    "detai_description": "不允许使用了实验性的样式属性值，新版本中可能不再支持（不建议使用）"
+  },
+  {
+    "name": "no-useless-style-value",
+    "brief_description": "不允许使用没必要的样式属性值",
+    "detai_description": "不允许使用没必要的样式属性值，该属性值为默认属性值"
+  },
+  {
+    "name": "no-muti-classname",
+    "brief_description": "不允许使用嵌套样式",
+    "detai_description": "不允许使用嵌套样式，weex中目前仅支持单class样式"
+  },
+  {
+    "name": "no-supported-style-value",
+    "brief_description": "不支持的样式属性值",
+    "detai_description": "不支持的样式属性值"
+  },
+  {
+    "name": "no-compatible-prop",
+    "brief_description": "不允许使用不兼容的属性",
+    "detai_description": "不允许使用不兼容的属性，该属性在客户端表现有差异"
+  },
+  {
+    "name": "no-script-syntax-error",
+    "brief_description": "不允许出现js语法错误",
+    "detai_description": "不允许出现js语法错误"
+  },
+  {
+    "name": "no-css-syntax-error",
+    "brief_description": "不允许出现css语法错误",
+    "detai_description": "不允许出现css语法错误"
+  },
+  {
+    "name": "no-template-syntax-error",
+    "brief_description": "不允许出现template语法错误",
+    "detai_description": "不允许出现template语法错误"
+  }
+]
