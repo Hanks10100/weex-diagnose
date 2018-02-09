@@ -1,0 +1,182 @@
+[
+  [
+    {
+      "info": {
+        "src": "test/vue/bundle.js",
+        "iteration": 1,
+        "packages": {},
+        "silent": true,
+        "output": "report.json"
+      },
+      "tips": [],
+      "warnings": [
+        {
+          "type": "eslint",
+          "ruleId": "eqeqeq",
+          "line": 173,
+          "column": 25,
+          "message": "Expected '===' and instead saw '=='.",
+          "source": "          if (global.xyz == 23) {"
+        },
+        {
+          "type": "eslint",
+          "ruleId": "no-console",
+          "line": 174,
+          "column": 12,
+          "message": "Unexpected console statement.",
+          "source": "            console.log('tttt')"
+        }
+      ],
+      "errors": [
+        {
+          "type": "eslint",
+          "ruleId": "no-restricted-globals",
+          "line": 173,
+          "column": 14,
+          "message": "Unexpected use of 'global'.",
+          "source": "          if (global.xyz == 23) {"
+        }
+      ],
+      "messages": [],
+      "summary": {
+        "bundleSize": 5321,
+        "totalCount": 1,
+        "totalDepth": 1,
+        "messageSize": 0,
+        "timecost": 0
+      }
+    }
+  ],
+  [
+    {
+      "info": {
+        "src": "test/vue/div.vue",
+        "iteration": 1,
+        "packages": {},
+        "silent": true,
+        "output": "report.json"
+      },
+      "tips": [
+        {
+          "type": "style",
+          "ruleId": "use-sylus",
+          "line": 7,
+          "column": 0,
+          "message": "NOTE: this file is using stylus, the line number in <style> will be mismatch.",
+          "source": "<style lang=\"stylus\" scoped>"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "messages": [],
+      "summary": {
+        "bundleSize": 4923,
+        "totalCount": 1,
+        "totalDepth": 1,
+        "messageSize": 0,
+        "timecost": 0
+      }
+    }
+  ],
+  [
+    {
+      "info": {
+        "src": "test/vue/no-scoped.vue",
+        "iteration": 1,
+        "packages": {},
+        "silent": true,
+        "output": "report.json"
+      },
+      "tips": [
+        {
+          "type": "style",
+          "ruleId": "no-useless-style-prop",
+          "line": 37,
+          "column": 5,
+          "message": "NOTE: property value `column` is the DEFAULT value for `flex-direction` (could be removed)",
+          "source": "    flex-direction: column;"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "eslint",
+          "ruleId": "eqeqeq",
+          "line": 15,
+          "column": 20,
+          "message": "Expected '===' and instead saw '=='.",
+          "source": "      if (global.x == 54) {"
+        },
+        {
+          "type": "eslint",
+          "ruleId": "no-console",
+          "line": 16,
+          "column": 9,
+          "message": "Unexpected console statement.",
+          "source": "        console.log('bb')"
+        },
+        {
+          "type": "style",
+          "ruleId": "no-use-scoped",
+          "line": 29,
+          "column": 8,
+          "message": "ERROR: <style> must be scoped!",
+          "source": "<style>"
+        },
+        {
+          "type": "style",
+          "ruleId": "no-standard-style-prop",
+          "line": 34,
+          "column": 5,
+          "message": "WARNING: `order` is not a standard property name (may not be supported)",
+          "source": "    order: abc;"
+        },
+        {
+          "type": "style",
+          "ruleId": "no-standard-style-prop",
+          "line": 40,
+          "column": 5,
+          "message": "WARNING: `display` is not a standard property name (may not be supported)",
+          "source": "    display: inline;"
+        }
+      ],
+      "errors": [
+        {
+          "type": "eslint",
+          "ruleId": "no-restricted-globals",
+          "line": 15,
+          "column": 11,
+          "message": "Unexpected use of 'global'.",
+          "source": "      if (global.x == 54) {"
+        },
+        {
+          "type": "template",
+          "ruleId": "template-syntax-error",
+          "line": 0,
+          "column": 0,
+          "message": "    tag <div> has no matching end tag.\n",
+          "source": "The tempalte error can not map to source code now, please check it by yourself."
+        },
+        {
+          "type": "template",
+          "ruleId": "template-syntax-error",
+          "line": 0,
+          "column": 0,
+          "message": "    tag <div> has no matching end tag.\n",
+          "source": "The tempalte error can not map to source code now, please check it by yourself."
+        }
+      ],
+      "messages": [
+        "\n    <template> (start at line 1)\n",
+        "    tag <div> has no matching end tag.\n",
+        "    tag <div> has no matching end tag.\n"
+      ],
+      "summary": {
+        "bundleSize": 5881,
+        "totalCount": 1,
+        "totalDepth": 1,
+        "messageSize": 0,
+        "timecost": 0
+      }
+    }
+  ]
+]

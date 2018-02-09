@@ -14,6 +14,7 @@ async function linter (code, options) {
       treeAdapter: parse5.treeAdapters.default,
       locationInfo: true
     })
+
     for (let i = 0; i < doc.childNodes.length; ++i) {
       const node = doc.childNodes[i]
       let start = end = line = column = 0

@@ -74,7 +74,6 @@ class Analyser {
     this.vdom = analyseVdom(this._raw.vdom)
     this.history = analyseHistory(this._raw.history)
     this.exception = analyseException(this._raw.exception)
-
     const res = analyseSyntax(this._raw.syntax)
     if (res) {
       this.tips.push(...res.tips)

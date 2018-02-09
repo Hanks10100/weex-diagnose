@@ -12,7 +12,6 @@ class WeexNodeRunner {
     this._history = []
     this._logs = []
     this.mockGlobalAPI()
-
     const { init, config } = runtime
     config.frameworks = frameworks
 
@@ -25,7 +24,6 @@ class WeexNodeRunner {
 
     // init frameworks
     this._context = init(config)
-
     this._context.registerModules(modules)
     this._context.registerComponents(components)
   }
