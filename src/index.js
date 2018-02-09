@@ -65,7 +65,6 @@ async function runTask (options = {}) {
       console.log(err)
     }
   }
-
   try {
     const result = await runner(options.code, analyser, options)
     analyser.takeRecord('runner', result)

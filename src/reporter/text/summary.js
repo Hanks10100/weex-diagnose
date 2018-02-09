@@ -19,7 +19,6 @@ function printSummary (summary) {
     }
   }
 
-  console.log()
   // printTable(table, { align: 'right' })
   table.forEach(({ label, value }) => {
     console.log(` => ${label}: ${value}`)

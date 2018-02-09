@@ -5,14 +5,6 @@ module.exports = {
   },
   useEslintrc: false,
   root: true,
-  // "globals": {
-  //   "global": false,
-  //   "window": false,
-  //   "callNative": false,
-  //   "callNativeModule": false,
-  //   "callNativeComponent": false,
-  //   "WXEnvironment": false,
-  // },
   rules: {
     // 禁用 alert / debugger / label
     "no-alert": "error",
